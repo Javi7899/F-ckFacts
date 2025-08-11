@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F*CKFACTS - Solo facts impactantes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="logo">F*CKFACTS</h1>
+            <p class="slogan">Solo facts que te harán decir WTF</p>
+            <a href="#listen" class="btn btn-accent">Escuchar ahora</a>
+            <div class="scroll-down"></div>
+        </div>
+    </header>
+
+    <section class="episodes">
+        <h2>Últimos Episodios</h2>
+        <div class="episodes-grid">
+            <div class="episode-card">
+                <div class="episode-cover"></div>
+                <h3>Episodio #24</h3>
+                <p>La verdad sobre los agujeros negros</p>
+                <button class="btn btn-play">▶ Reproducir</button>
+                <div class="hover-fact">¿Sabías que un agujero negro del tamaño de una moneda tendría la masa de la Tierra?</div>
+            </div>
+            <div class="episode-card">
+                <div class="episode-cover"></div>
+                <h3>Episodio #23</h3>
+                <p>Mitos alimenticios</p>
+                <button class="btn btn-play">▶ Reproducir</button>
+                <div class="hover-fact">La zanahoria mejora la visión... pero este mito fue inventado en la WWII para ocultar el radar</div>
+            </div>
+            <div class="episode-card">
+                <div class="episode-cover"></div>
+                <h3>Episodio #22</h3>
+                <p>Historia oculta del internet</p>
+                <button class="btn btn-play">▶ Reproducir</button>
+                <div class="hover-fact">El primer sitio web del mundo sigue online: http://info.cern.ch</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="wtf-fact">
+        <div class="wtf-content">
+            <h2>Dato WTF de la semana</h2>
+            <p class="fact-text">Los pulpos tienen tres corazones y su sangre es azul.</p>
+            <button class="btn btn-accent">Descubre más en el Episodio #18</button>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Sobre el podcast</h2>
+                <p>F*CKFACTS es tu dosis semanal de datos impactantes, curiosidades científicas y mitos destruidos. Sin rodeos, sin filtros, solo facts que te harán cuestionar todo.</p>
+                <p>Hosteado por [Tu Nombre], con un estilo directo y humor ácido.</p>
+            </div>
+            <div class="about-image"></div>
+        </div>
+    </section>
+
+    <section class="subscribe">
+        <h2>Suscríbete al F*CKFACTS semanal</h2>
+        <form class="subscribe-form">
+            <input type="email" placeholder="Tu email" required>
+            <button type="submit" class="btn btn-accent">Sorpréndeme</button>
+        </form>
+    </section>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#">TikTok</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter/X</a>
+            <a href="#">YouTube</a>
+        </div>
+        <div class="platform-links">
+            <a href="#">Spotify</a>
+            <a href="#">Apple Podcasts</a>
+            <a href="#">Google Podcasts</a>
+        </div>
+        <button id="randomFactBtn" class="btn btn-accent">Dame un F*ckFact</button>
+        <div id="randomFactDisplay" class="random-fact"></div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

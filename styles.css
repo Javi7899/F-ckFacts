@@ -1,0 +1,308 @@
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000;
+    color: #fff;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-accent {
+    background-color: #ff0033;
+    color: white;
+}
+
+.btn-accent:hover {
+    background-color: #cc0029;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 0, 51, 0.3);
+}
+
+.btn-play {
+    background-color: transparent;
+    color: #ff0033;
+    border: 2px solid #ff0033;
+}
+
+.btn-play:hover {
+    background-color: #ff0033;
+    color: white;
+}
+
+/* Hero section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    z-index: 2;
+}
+
+.logo {
+    font-size: 6rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: -3px;
+}
+
+.slogan {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    font-weight: 300;
+}
+
+.scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 50px;
+    border: 2px solid #fff;
+    border-radius: 15px;
+}
+
+.scroll-down::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: scrollDown 2s infinite;
+}
+
+@keyframes scrollDown {
+    0% { top: 10px; opacity: 1; }
+    100% { top: 30px; opacity: 0; }
+}
+
+/* Episodes section */
+.episodes {
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.episodes h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.episodes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.episode-card {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.episode-card:hover {
+    transform: translateY(-10px);
+}
+
+.episode-cover {
+    width: 100%;
+    height: 200px;
+    background-color: #333;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.hover-fact {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 51, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.episode-card:hover .hover-fact {
+    opacity: 1;
+}
+
+/* WTF Fact section */
+.wtf-fact {
+    padding: 100px 20px;
+    background-color: #111;
+    text-align: center;
+}
+
+.wtf-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.fact-text {
+    font-size: 2rem;
+    margin: 40px 0;
+    font-weight: 700;
+}
+
+/* About section */
+.about {
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-image {
+    flex: 1;
+    height: 400px;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+/* Subscribe section */
+.subscribe {
+    padding: 100px 20px;
+    text-align: center;
+    background-color: #111;
+}
+
+.subscribe-form {
+    max-width: 500px;
+    margin: 40px auto 0;
+    display: flex;
+}
+
+.subscribe-form input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 30px 0 0 30px;
+    font-size: 1rem;
+}
+
+.subscribe-form button {
+    border-radius: 0 30px 30px 0;
+}
+
+/* Footer */
+.footer {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #000;
+}
+
+.social-links, .platform-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.social-links a, .platform-links a {
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover, .platform-links a:hover {
+    color: #ff0033;
+}
+
+.random-fact {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #111;
+    border-radius: 10px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .logo {
+        font-size: 4rem;
+    }
+    
+    .about-content {
+        flex-direction: column;
+    }
+    
+    .about-image {
+        width: 100%;
+        margin-top: 30px;
+    }
+    
+    .subscribe-form {
+        flex-direction: column;
+    }
+    
+    .subscribe-form input {
+        border-radius: 30px;
+        margin-bottom: 10px;
+    }
+    
+    .subscribe-form button {
+        border-radius: 30px;
+    }
+}

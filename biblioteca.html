@@ -17,21 +17,29 @@
     </header>
 
     <section class="library">
+        <div class="library-header">
+            <h2>Todos los Episodios</h2>
+            <p>Toda la colección de F*CKFACTS en un solo lugar</p>
+        </div>
+        
         <div class="library-controls">
             <div class="search-container">
                 <i class="fas fa-search"></i>
                 <input type="text" id="search-episodes" placeholder="Buscar episodios...">
             </div>
-            <select id="filter-order">
-                <option value="newest">Más recientes primero</option>
-                <option value="oldest">Más antiguos primero</option>
-                <option value="duration-asc">Duración (corto a largo)</option>
-                <option value="duration-desc">Duración (largo a corto)</option>
-            </select>
+            <div class="filter-container">
+                <select id="filter-order">
+                    <option value="newest">Más recientes primero</option>
+                    <option value="oldest">Más antiguos primero</option>
+                </select>
+            </div>
         </div>
         
         <div id="full-episodes-grid" class="full-episodes-grid">
-            <!-- Todos los episodios se cargarán aquí -->
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Cargando todos los episodios...</p>
+            </div>
         </div>
     </section>
 

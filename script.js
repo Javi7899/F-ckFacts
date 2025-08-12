@@ -287,3 +287,48 @@ document.head.appendChild(style);
 const confettiScript = document.createElement('script');
 confettiScript.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
 document.head.appendChild(confettiScript);
+// Efecto especial para el nombre en el footer
+document.querySelectorAll('.name-part').forEach((part, index) => {
+    part.style.animationDelay = `${index * 0.1}s`;
+    
+    part.addEventListener('mouseenter', () => {
+        part.style.transform = 'translateY(-5px)';
+        part.style.textShadow = `0 5px 15px rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.7)`;
+    });
+    
+    part.addEventListener('mouseleave', () => {
+        part.style.transform = '';
+        part.style.textShadow = '';
+    });
+});
+
+// Efecto de confeti al hacer clic en el nombre
+document.querySelector('.dev-name').addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Confeti personalizado
+    if (window.confetti) {
+        const colors = ['#ff0033', '#00ff88', '#0099ff'];
+        
+        confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0.8, y: 1 },
+            colors: colors
+        });
+        
+        confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 55,
+            origin: { x: 0.2, y: 1 },
+            colors: colors
+        });
+    }
+    
+    // Abre el enlace después de la animación
+    setTimeout(() => {
+        window.open(e.target.href, '_blank');
+    }, 500);
+});

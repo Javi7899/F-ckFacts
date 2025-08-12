@@ -1,3 +1,87 @@
+// Función para obtener episodios del RSS
+async function fetchEpisodes(isLibrary = false) {
+    try {
+        const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://anchor.fm/s/108369df0/podcast/rss');
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+            const episodes = data.items.map(item => ({
+                title: item.title,
+                pubDate: item.pubDate,
+                audio: item.enclosure.link,
+                image: item.thumbnail,
+                description: item.description,
+                link: item.link
+            }));
+            
+            if (isLibrary) {
+                renderFullLibrary(episodes);
+            } else {
+                renderHomeEpisodes(episodes);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching episodes:', error);
+    }
+}
+
+function renderHomeEpisodes(episodes) {
+    // Episodio destacado (el más reciente)
+    const featured = episodes[0];
+    const featuredContainer = document.getElementById('featured-episode');
+    
+    featuredContainer.innerHTML = `
+        <div class="featured-episode-cover" style="background-image: url('${featured.image || ''}')"></div>
+        <div class="featured-episode-content">
+            <h3>ÚLTIMO EPISODIO</h3>
+            <h2>${featured.title}</h2>
+            <p>${formatDate(featured.pubDate)}</p>
+            <p>${truncateDescription(featured.description)}</p>
+            <button class="btn btn-accent btn-play" data-audio="${featured.audio}">▶ Escuchar ahora</button>
+            <a href="${featured.link}" target="_blank" class="btn">Ver en Anchor</a>
+        </div>
+    `;
+    
+    // Grid de episodios (siguientes 3)
+    const gridContainer = document.getElementById('episodes-grid');
+    gridContainer.innerHTML = '';
+    
+    const episodesToShow = episodes.slice(1, 4);
+    episodesToShow.forEach(episode => {
+        const episodeCard = document.createElement('div');
+        episodeCard.className = 'episode-card';
+        episodeCard.innerHTML = `
+            <div class="episode-cover" style="background-image: url('${episode.image || ''}')"></div>
+            <h3>${episode.title}</h3>
+            <p>${formatDate(episode.pubDate)}</p>
+            <button class="btn btn-play" data-audio="${episode.audio}">▶ Reproducir</button>
+        `;
+        gridContainer.appendChild(episodeCard);
+    });
+    
+    setupAudioPlayers();
+}
+
+// Funciones auxiliares
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('es-ES', options);
+}
+
+function truncateDescription(description) {
+    return description.length > 150 ? 
+        `${description.substring(0, 150)}...` : description;
+}
+
+function setupAudioPlayers() {
+    document.querySelectorAll('.btn-play').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const audioUrl = this.getAttribute('data-audio');
+            // Implementa tu reproductor de audio aquí
+            console.log('Reproduciendo:', audioUrl);
+        });
+    });
+}
 document.addEventListener('DOMContentLoaded', function() {
     // Random fact generator
     const randomFacts = [

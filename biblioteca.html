@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca de Episodios | F*CKFACTS</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
-    <header class="hero">
+    <header class="hero library-hero">
         <div class="hero-content">
             <h1 class="logo">F*CKFACTS</h1>
             <p class="slogan">Biblioteca completa</p>
@@ -16,10 +18,15 @@
 
     <section class="library">
         <div class="library-controls">
-            <input type="text" id="search-episodes" placeholder="Buscar episodios...">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-episodes" placeholder="Buscar episodios...">
+            </div>
             <select id="filter-order">
                 <option value="newest">Más recientes primero</option>
                 <option value="oldest">Más antiguos primero</option>
+                <option value="duration-asc">Duración (corto a largo)</option>
+                <option value="duration-desc">Duración (largo a corto)</option>
             </select>
         </div>
         

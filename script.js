@@ -7,28 +7,35 @@ const truthMythFacts = [
     { fact: "Las mariposas saborean con sus patas", answer: true, explanation: "¡Verdadero! Tienen receptores gustativos en las patas." }
 ];
 
-// Función para obtener episodios del RSS
+// Random facts generator
+const randomFacts = [
+    "Los humanos comparten el 50% de su ADN con los plátanos.",
+    "El sonido que hace un pato no hace eco y nadie sabe por qué.",
+    "En Japón hay más máquinas expendedoras que personas.",
+    "El músculo más fuerte del cuerpo humano es la lengua.",
+    "Las mariposas saborean con sus patas.",
+    "El nombre original de Google era 'Backrub'.",
+    "Los ojos de un avestruz son más grandes que su cerebro."
+];
+
+// Nueva función fetchEpisodes mejorada
 async function fetchEpisodes(isLibrary = false) {
     try {
-        const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const rssUrl = encodeURIComponent('https://anchor.fm/s/108369df0/podcast/rss');
-        const response = await fetch(proxyUrl + rssUrl);
+        const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://anchor.fm/s/108369df0/podcast/rss');
         const data = await response.json();
         
-        // Parseamos el contenido XML del RSS
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+        if (!data.items || data.items.length === 0) {
+            throw new Error('No se encontraron episodios');
+        }
         
-        // Extraemos los episodios
-        const items = xmlDoc.querySelectorAll('item');
-        const episodes = Array.from(items).map(item => {
+        const episodes = data.items.map(item => {
             return {
-                title: item.querySelector('title').textContent,
-                pubDate: item.querySelector('pubDate').textContent,
-                audio: item.querySelector('enclosure').getAttribute('url'),
-                image: item.querySelector('image')?.getAttribute('href') || 'default-cover.jpg',
-                description: item.querySelector('description').textContent,
-                link: item.querySelector('link').textContent
+                title: item.title,
+                pubDate: item.pubDate,
+                audio: item.enclosure.link,
+                image: item.thumbnail || 'default-cover.jpg',
+                description: item.description,
+                link: item.link
             };
         });
         
@@ -39,7 +46,6 @@ async function fetchEpisodes(isLibrary = false) {
         }
     } catch (error) {
         console.error('Error fetching episodes:', error);
-        // Mostrar episodios de ejemplo si hay error (solo para desarrollo)
         if (isLibrary) {
             renderFullLibrary([]);
         } else {
@@ -48,8 +54,8 @@ async function fetchEpisodes(isLibrary = false) {
     }
 }
 
+// Función para renderizar episodios en home
 function renderHomeEpisodes(episodes) {
-    // Episodio destacado (el más reciente)
     const featuredContainer = document.getElementById('featured-episode');
     const gridContainer = document.getElementById('episodes-grid');
     
@@ -64,26 +70,27 @@ function renderHomeEpisodes(episodes) {
         return;
     }
 
+    // Último episodio (destacado)
     const featured = episodes[0];
     featuredContainer.innerHTML = `
         <div class="featured-episode-cover" style="background-image: url('${featured.image}')">
             <div class="featured-badge">NUEVO</div>
         </div>
         <div class="featured-episode-content">
-            <h3>ÚLTIMO EPISODIO</h3>
+            <h3>EPISODIO MÁS RECIENTE</h3>
             <h2>${featured.title}</h2>
             <div class="featured-meta">
                 <span class="featured-date"><i class="far fa-calendar-alt"></i> ${formatDate(featured.pubDate)}</span>
             </div>
             <p class="featured-description">${truncateDescription(featured.description, 150)}</p>
             <div class="featured-buttons">
-                <a href="${featured.link}" target="_blank" class="btn btn-accent"><i class="fab fa-spotify"></i> Spotify</a>
-                <a href="${featured.link}" target="_blank" class="btn btn-outline"><i class="fas fa-headphones"></i> Escuchar</a>
+                <a href="${featured.link}" target="_blank" class="btn btn-accent"><i class="fab fa-spotify"></i> Escuchar en Spotify</a>
+                <a href="${featured.link}" target="_blank" class="btn btn-outline"><i class="fas fa-external-link-alt"></i> Más plataformas</a>
             </div>
         </div>
     `;
     
-    // Grid de episodios (siguientes 3)
+    // Episodios anteriores (siguientes 3)
     gridContainer.innerHTML = '';
     
     const episodesToShow = episodes.slice(1, 4);
@@ -98,21 +105,70 @@ function renderHomeEpisodes(episodes) {
                     <span class="episode-date"><i class="far fa-calendar-alt"></i> ${formatDate(episode.pubDate)}</span>
                 </div>
                 <div class="episode-buttons">
-                    <a href="${episode.link}" target="_blank" class="btn btn-play"><i class="fas fa-play"></i> Escuchar</a>
+                    <a href="${episode.link}" target="_blank" class="btn btn-play"><i class="fas fa-headphones"></i> Escuchar</a>
                 </div>
             </div>
         `;
         gridContainer.appendChild(episodeCard);
     });
+}
 
-    // Añadir botón de Random Fact después de los episodios
-    const randomFactSection = document.createElement('div');
-    randomFactSection.className = 'random-fact-section';
-    randomFactSection.innerHTML = `
-        <button id="randomFactBtn" class="btn btn-accent">Dame un F*ckFact</button>
-        <div id="randomFactDisplay" class="random-fact"></div>
-    `;
-    gridContainer.parentNode.insertBefore(randomFactSection, gridContainer.nextSibling);
+// Juego Verdad o Mito
+function setupTruthMythGame() {
+    const truthMythText = document.getElementById('truth-myth-text');
+    const truthMythResult = document.getElementById('truth-myth-result');
+    const newFactBtn = document.getElementById('new-fact-btn');
+    const truthBtn = document.querySelector('.btn-truth');
+    const mythBtn = document.querySelector('.btn-myth');
+    
+    let currentFact = null;
+    
+    function getRandomFact() {
+        const randomIndex = Math.floor(Math.random() * truthMythFacts.length);
+        currentFact = truthMythFacts[randomIndex];
+        truthMythText.textContent = currentFact.fact;
+        truthMythResult.textContent = '';
+        truthMythResult.className = 'truth-myth-result';
+    }
+    
+    function checkAnswer(userAnswer) {
+        if (!currentFact) return;
+        
+        const isCorrect = userAnswer === currentFact.answer;
+        
+        if (isCorrect) {
+            triggerConfetti();
+        }
+        
+        truthMythResult.textContent = isCorrect ? 
+            '¡Correcto! 🎉' : '¡Incorrecto! 😅';
+        truthMythResult.className = `truth-myth-result ${isCorrect ? 'correct' : 'incorrect'}`;
+        
+        // Mostrar explicación después de 1 segundo
+        setTimeout(() => {
+            truthMythResult.textContent += ` ${currentFact.explanation}`;
+        }, 1000);
+    }
+    
+    truthBtn.addEventListener('click', () => checkAnswer(true));
+    mythBtn.addEventListener('click', () => checkAnswer(false));
+    newFactBtn.addEventListener('click', getRandomFact);
+    
+    // Iniciar con un fact aleatorio
+    getRandomFact();
+}
+
+// Función para lanzar confeti
+function triggerConfetti() {
+    const confettiSettings = {
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+    };
+    
+    if (window.confetti) {
+        confetti(confettiSettings);
+    }
 }
 
 // Funciones auxiliares
@@ -138,16 +194,6 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchEpisodes();
     
     // Random fact generator
-    const randomFacts = [
-        "Los humanos comparten el 50% de su ADN con los plátanos.",
-        "El sonido que hace un pato no hace eco y nadie sabe por qué.",
-        "En Japón hay más máquinas expendedoras que personas.",
-        "El músculo más fuerte del cuerpo humano es la lengua.",
-        "Las mariposas saborean con sus patas.",
-        "El nombre original de Google era 'Backrub'.",
-        "Los ojos de un avestruz son más grandes que su cerebro."
-    ];
-    
     document.addEventListener('click', function(e) {
         if (e.target.id === 'randomFactBtn') {
             const randomFactDisplay = document.getElementById('randomFactDisplay');
@@ -211,63 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function setupTruthMythGame() {
-    const truthMythText = document.getElementById('truth-myth-text');
-    const truthMythResult = document.getElementById('truth-myth-result');
-    const newFactBtn = document.getElementById('new-fact-btn');
-    const truthBtn = document.querySelector('.btn-truth');
-    const mythBtn = document.querySelector('.btn-myth');
-    
-    let currentFact = null;
-    
-    function getRandomFact() {
-        const randomIndex = Math.floor(Math.random() * truthMythFacts.length);
-        currentFact = truthMythFacts[randomIndex];
-        truthMythText.textContent = currentFact.fact;
-        truthMythResult.textContent = '';
-        truthMythResult.className = 'truth-myth-result';
-    }
-    
-    function checkAnswer(userAnswer) {
-        if (!currentFact) return;
-        
-        const isCorrect = userAnswer === currentFact.answer;
-        
-        if (isCorrect) {
-            triggerConfetti();
-        }
-        
-        truthMythResult.textContent = isCorrect ? 
-            '¡Correcto! 🎉' : '¡Incorrecto! 😅';
-        truthMythResult.className = `truth-myth-result ${isCorrect ? 'correct' : 'incorrect'}`;
-        
-        // Mostrar explicación después de 1 segundo
-        setTimeout(() => {
-            truthMythResult.textContent += ` ${currentFact.explanation}`;
-        }, 1000);
-    }
-    
-    function triggerConfetti() {
-        const confettiSettings = {
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 }
-        };
-        
-        if (window.confetti) {
-            confetti(confettiSettings);
-        }
-    }
-    
-    truthBtn.addEventListener('click', () => checkAnswer(true));
-    mythBtn.addEventListener('click', () => checkAnswer(false));
-    newFactBtn.addEventListener('click', getRandomFact);
-    
-    // Iniciar con un fact aleatorio
-    getRandomFact();
-}
-
-// Añadir la animación de flip al CSS
+// Añadir animación de flip al CSS
 const style = document.createElement('style');
 style.textContent = `
     @keyframes flipIn {

@@ -332,3 +332,521 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
         window.open(e.target.href, '_blank');
     }, 500);
 });
+// Banco de 50 preguntas únicas (no aparecen en otras secciones)
+const quizQuestions = [
+    {
+        question: "¿El olor a hierba recién cortada es en realidad una señal de socorro de las plantas?",
+        answer: true,
+        explanation: "VERDAD. Es un compuesto químico que liberan para advertir a otras plantas."
+    },
+    {
+        question: "¿Los astronautas crecen aproximadamente 5 cm de altura en el espacio?",
+        answer: true,
+        explanation: "VERDAD. Sin la gravedad, la columna vertebral se expande."
+    },
+    {
+        question: "¿El vodka puede ser usado como combustible para autos?",
+        answer: true,
+        explanation: "VERDAD. Contiene etanol, que puede usarse como combustible alternativo."
+    },
+    {
+        question: "¿Las abejas reconocen rostros humanos?",
+        answer: true,
+        explanation: "VERDAD. Pueden aprender y recordar características faciales."
+    },
+    {
+        question: "¿El orgasmo de un cerdo dura 30 minutos?",
+        answer: false,
+        explanation: "MENTIRA. Dura aproximadamente 15 minutos (aún así es impresionante)."
+    },
+    {
+        question: "¿Los cocodrilos pueden trepar árboles?",
+        answer: true,
+        explanation: "VERDAD. Algunas especies pueden escalar hasta 3 metros de altura."
+    },
+    {
+        question: "¿El polvo que ves flotando en un rayo de luz es en su mayoría piel muerta?",
+        answer: true,
+        explanation: "VERDAD. Aproximadamente el 80% de ese polvo son células epiteliales."
+    },
+    {
+        question: "¿Los pingüinos tienen rodillas?",
+        answer: true,
+        explanation: "VERDAD. Están ocultas bajo su plumaje y piel gruesa."
+    },
+    {
+        question: "¿El cerebro humano puede sobrevivir 5 minutos sin oxígeno?",
+        answer: false,
+        explanation: "MENTIRA. El daño cerebral comienza después de solo 1 minuto sin oxígeno."
+    },
+    {
+        question: "¿Existe un hongo que sabe exactamente a pollo frito?",
+        answer: true,
+        explanation: "VERDAD. El hongo Laetiporus tiene ese sabor característico."
+    },
+    {
+        question: "¿Los gatos no pueden saborear lo dulce?",
+        answer: true,
+        explanation: "VERDAD. Carecen del receptor genético para detectar sabores dulces."
+    },
+    {
+        question: "¿Las ratas se ríen cuando les hacen cosquillas?",
+        answer: true,
+        explanation: "VERDAD. Emiten sonidos ultrasónicos similares a risas."
+    },
+    {
+        question: "¿El agua caliente se congela más rápido que la fría?",
+        answer: true,
+        explanation: "VERDAD. Es el efecto Mpemba, aún no completamente explicado."
+    },
+    {
+        question: "¿Los humanos tienen más bacterias que células en su cuerpo?",
+        answer: true,
+        explanation: "VERDAD. La proporción es aproximadamente 1.3:1 a favor de las bacterias."
+    },
+    {
+        question: "¿Las cabras tienen acentos diferentes según su región?",
+        answer: true,
+        explanation: "VERDAD. Adaptan sus balidos al dialecto local."
+    },
+    {
+        question: "¿El corazón de una ballena azul es del tamaño de un auto pequeño?",
+        answer: true,
+        explanation: "VERDAD. Puede pesar hasta 900 kg y medir 1.5 metros."
+    },
+    {
+        question: "¿Los ojos de los avestruces son más grandes que su cerebro?",
+        answer: true,
+        explanation: "VERDAD. Sus ojos miden 5 cm de diámetro."
+    },
+    {
+        question: "¿El olor a lluvia tiene nombre científico?",
+        answer: true,
+        explanation: "VERDAD. Se llama 'petricor', causado por bacterias y aceites vegetales."
+    },
+    {
+        question: "¿Los pulpos tienen sangre azul?",
+        answer: true,
+        explanation: "VERDAD. Usan hemocianina (cobre) en lugar de hemoglobina (hierro)."
+    },
+    {
+        question: "¿Las zanahorias eran originalmente moradas?",
+        answer: true,
+        explanation: "VERDAD. Las naranjas fueron creadas en el siglo XVI en honor a la casa real holandesa."
+    },
+    {
+        question: "¿Los elefantes no pueden saltar?",
+        answer: true,
+        explanation: "VERDAD. Son los únicos mamíferos incapaces de saltar."
+    },
+    {
+        question: "¿El unicornio es el animal nacional de Escocia?",
+        answer: true,
+        explanation: "VERDAD. Fue adoptado como símbolo en el siglo XII."
+    },
+    {
+        question: "¿Los caracoles pueden dormir hasta 3 años?",
+        answer: true,
+        explanation: "VERDAD. En condiciones de sequía extrema."
+    },
+    {
+        question: "¿El veneno de algunas arañas puede disolver carne humana?",
+        answer: true,
+        explanation: "VERDAD. La araña reclusa parda tiene veneno necrótico."
+    },
+    {
+        question: "¿Las vacas tienen mejores amigos?",
+        answer: true,
+        explanation: "VERDAD. Forman vínculos estrechos con individuos específicos."
+    },
+    {
+        question: "¿El calamar gigante tiene los ojos más grandes del reino animal?",
+        answer: true,
+        explanation: "VERDAD. Pueden medir hasta 27 cm de diámetro."
+    },
+    {
+        question: "¿Los humanos comparten el 60% de su ADN con los plátanos?",
+        answer: false,
+        explanation: "MENTIRA. Compartimos alrededor del 50%."
+    },
+    {
+        question: "¿Las hormigas no duermen?",
+        answer: false,
+        explanation: "MENTIRA. Tienen ciclos de descanso de aproximadamente 8 minutos."
+    },
+    {
+        question: "¿Los tiburones pueden detectar una gota de sangre en una piscina olímpica?",
+        answer: true,
+        explanation: "VERDAD. Su sentido del olfato es extremadamente sensible."
+    },
+    {
+        question: "¿El pelo facial crece más rápido que el del cuero cabelludo?",
+        answer: true,
+        explanation: "VERDAD. La barba crece más rápido debido a la testosterona."
+    },
+    {
+        question: "¿Las jirafas solo duermen 20 minutos al día?",
+        answer: false,
+        explanation: "MENTIRA. Duermen alrededor de 4 horas diarias en total."
+    },
+    {
+        question: "¿Los koalas tienen huellas dactilares casi idénticas a las humanas?",
+        answer: true,
+        explanation: "VERDAD. Son indistinguibles incluso bajo microscopio electrónico."
+    },
+    {
+        question: "¿El sonido viaja más rápido en el agua que en el aire?",
+        answer: true,
+        explanation: "VERDAD. Aproximadamente 4 veces más rápido (1482 m/s vs 343 m/s)."
+    },
+    {
+        question: "¿Los delfines se llaman por su nombre?",
+        answer: true,
+        explanation: "VERDAD. Cada uno desarrolla un silbido único que funciona como nombre."
+    },
+    {
+        question: "¿El pelo rubio es más común en adultos que en niños?",
+        answer: false,
+        explanation: "MENTIRA. Muchos niños rubios se oscurecen al crecer."
+    },
+    {
+        question: "¿Los camellos almacenan agua en sus jorobas?",
+        answer: false,
+        explanation: "MENTIRA. Almacenan grasa, el agua está distribuida en su cuerpo."
+    },
+    {
+        question: "¿El estrés puede cambiar el color del cabello?",
+        answer: true,
+        explanation: "VERDAD. El estrés extremo puede acelerar el encanecimiento."
+    },
+    {
+        question: "¿Los ojos de los recién nacidos son siempre azules al principio?",
+        answer: false,
+        explanation: "MENTIRA. Depende de la etnia, muchos nacen con ojos oscuros."
+    },
+    {
+        question: "¿El cerebro humano puede almacenar 2.5 petabytes de información?",
+        answer: true,
+        explanation: "VERDAD. Equivalente a aproximadamente 3 millones de horas de TV."
+    },
+    {
+        question: "¿Las uñas de los pies crecen más lento que las de las manos?",
+        answer: true,
+        explanation: "VERDAD. Aproximadamente 4 veces más lento."
+    },
+    {
+        question: "¿Los bebés tienen más huesos que los adultos?",
+        answer: true,
+        explanation: "VERDAD. Nacen con unos 300 huesos que luego se fusionan en 206."
+    },
+    {
+        question: "¿El chocolate era usado como moneda por los aztecas?",
+        answer: true,
+        explanation: "VERDAD. Los granos de cacao eran altamente valorados."
+    },
+    {
+        question: "¿Los humanos son los únicos animales que producen lágrimas emocionales?",
+        answer: true,
+        explanation: "VERDAD. Otras especies producen lágrimas, pero no por emoción."
+    },
+    {
+        question: "¿El ajo cortado con cuchillo de metal pierde propiedades?",
+        answer: false,
+        explanation: "MENTIRA. El material del cuchillo no afecta sus propiedades."
+    },
+    {
+        question: "¿Los peces dorados tienen memoria de solo 3 segundos?",
+        answer: false,
+        explanation: "MENTIRA. Pueden recordar cosas por meses."
+    },
+    {
+        question: "¿El cabello humano es casi indestructible?",
+        answer: true,
+        explanation: "VERDAD. Se descompone muy lentamente y resiste muchos ácidos."
+    },
+    {
+        question: "¿Los murciélagos siempre giran a la izquierda al salir de cuevas?",
+        answer: false,
+        explanation: "MENTIRA. No hay preferencia direccional comprobada."
+    },
+    {
+        question: "¿El ojo humano puede distinguir 10 millones de colores diferentes?",
+        answer: true,
+        explanation: "VERDAD. Gracias a las combinaciones de conos oculares."
+    },
+    {
+        question: "¿Los bebés no producen lágrimas hasta el primer mes?",
+        answer: true,
+        explanation: "VERDAD. Sus conductos lagrimales no están completamente desarrollados."
+    },
+    {
+        question: "¿El café es en realidad una fruta?",
+        answer: true,
+        explanation: "VERDAD. Los granos son semillas de la baya del cafeto."
+    }
+];
+
+// Variables del juego
+let currentQuestion = 0;
+let correctAnswers = 0;
+let wrongAnswers = 0;
+let startTime;
+let timerInterval;
+const totalQuestions = quizQuestions.length;
+let usedQuestions = [];
+
+// Elementos del DOM
+const questionText = document.getElementById('question-text');
+const currentQuestionElement = document.getElementById('current-question');
+const progressBar = document.querySelector('.progress-bar');
+const quizContainer = document.querySelector('.quiz-question-container');
+const resultContainer = document.querySelector('.quiz-result');
+const correctCountElement = document.getElementById('correct-count');
+const wrongCountElement = document.getElementById('wrong-count');
+const timeCounterElement = document.getElementById('time-counter');
+const explanationText = document.getElementById('explanation-text');
+const explanationContainer = document.querySelector('.explanation-container');
+const nextQuestionButton = document.querySelector('.next-question');
+const finalCorrectElement = document.getElementById('final-correct');
+const finalWrongElement = document.getElementById('final-wrong');
+const finalTimeElement = document.getElementById('final-time');
+const performanceFill = document.querySelector('.performance-fill');
+const performanceText = document.getElementById('performance-text');
+const restartButton = document.getElementById('restart-quiz');
+const shareButton = document.getElementById('share-results');
+const options = document.querySelectorAll('.quiz-option');
+
+// Función para seleccionar pregunta aleatoria sin repetir
+function getRandomQuestion() {
+    if (usedQuestions.length === quizQuestions.length) {
+        usedQuestions = []; // Reiniciar si ya se usaron todas
+    }
+    
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * quizQuestions.length);
+    } while (usedQuestions.includes(randomIndex));
+    
+    usedQuestions.push(randomIndex);
+    return quizQuestions[randomIndex];
+}
+
+// Iniciar temporizador
+function startTimer() {
+    startTime = new Date();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+// Actualizar temporizador
+function updateTimer() {
+    const currentTime = new Date();
+    const elapsedTime = new Date(currentTime - startTime);
+    const minutes = elapsedTime.getMinutes().toString().padStart(2, '0');
+    const seconds = elapsedTime.getSeconds().toString().padStart(2, '0');
+    timeCounterElement.textContent = `${minutes}:${seconds}`;
+}
+
+// Detener temporizador
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// Cargar pregunta
+function loadQuestion() {
+    const question = getRandomQuestion();
+    questionText.textContent = question.question;
+    currentQuestionElement.textContent = currentQuestion + 1;
+    progressBar.style.width = `${((currentQuestion + 1) / totalQuestions * 100)}%`;
+    
+    // Asignar valores correctos/incorrectos aleatorios a los botones
+    const randomOrder = Math.random() > 0.5;
+    options[0].dataset.correct = randomOrder ? question.answer : !question.answer;
+    options[1].dataset.correct = !randomOrder ? question.answer : !question.answer;
+    
+    // Restablecer estilos de opciones
+    options.forEach(option => {
+        option.classList.remove('correct-answer', 'wrong-answer');
+        option.disabled = false;
+    });
+    
+    // Ocultar explicación
+    explanationContainer.classList.add('hidden');
+    
+    // Iniciar temporizador si es la primera pregunta
+    if (currentQuestion === 0) {
+        startTimer();
+    }
+}
+
+// Mostrar explicación
+function showExplanation(question, selectedCorrect) {
+    explanationText.textContent = question.explanation;
+    explanationContainer.classList.remove('hidden');
+    
+    // Desplazar a la explicación
+    explanationContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Mostrar resultados finales
+function showResults() {
+    stopTimer();
+    
+    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+    const elapsedTime = new Date(new Date() - startTime);
+    const minutes = elapsedTime.getMinutes().toString().padStart(2, '0');
+    const seconds = elapsedTime.getSeconds().toString().padStart(2, '0');
+    
+    // Actualizar estadísticas
+    finalCorrectElement.textContent = correctAnswers;
+    finalWrongElement.textContent = wrongAnswers;
+    finalTimeElement.textContent = `${minutes}:${seconds}`;
+    performanceFill.style.width = `${percentage}%`;
+    
+    // Mensaje de desempeño
+    let performanceMessage;
+    if (percentage >= 90) {
+        performanceMessage = "¡Eres un GENIO de los datos WTF! 🤯";
+    } else if (percentage >= 70) {
+        performanceMessage = "¡Excelente! Sabes más que el promedio 🎯";
+    } else if (percentage >= 50) {
+        performanceMessage = "¡No está mal! Pero necesitas más F*CKFACTS 💪";
+    } else {
+        performanceMessage = "¡Ups! Necesitas una dosis diaria de F*CKFACTS 📚";
+    }
+    performanceText.textContent = performanceMessage;
+    
+    // Mostrar contenedor de resultados
+    quizContainer.classList.add('hidden');
+    resultContainer.classList.remove('hidden');
+    
+    // Confeti para buenos resultados
+    if (percentage >= 80) {
+        triggerConfetti();
+    }
+}
+
+// Reiniciar quiz
+function restartQuiz() {
+    currentQuestion = 0;
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    usedQuestions = [];
+    correctCountElement.textContent = '0';
+    wrongCountElement.textContent = '0';
+    resultContainer.classList.add('hidden');
+    quizContainer.classList.remove('hidden');
+    loadQuestion();
+}
+
+// Compartir resultados
+function shareResults() {
+    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+    const text = `¡Acerté ${percentage}% en el F*CK QUIZ EXTREMO! ¿Te atreves a superarme? ${window.location.href}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Mis resultados F*CK QUIZ',
+            text: text,
+            url: window.location.href
+        }).catch(() => {
+            // Fallback si el usuario cancela
+            copyToClipboard(text);
+        });
+    } else {
+        // Fallback para navegadores sin API de share
+        copyToClipboard(text);
+        alert('¡Resultados copiados! Péguelos donde quiera compartirlos');
+    }
+}
+
+// Copiar al portapapeles
+function copyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+}
+
+// Event Listeners
+options.forEach(option => {
+    option.addEventListener('click', function() {
+        const isCorrect = this.dataset.correct === 'true';
+        const currentQ = quizQuestions[usedQuestions[usedQuestions.length - 1]];
+        
+        if (isCorrect) {
+            correctAnswers++;
+            this.classList.add('correct-answer');
+        } else {
+            wrongAnswers++;
+            this.classList.add('wrong-answer');
+        }
+        
+        // Actualizar contadores
+        correctCountElement.textContent = correctAnswers;
+        wrongCountElement.textContent = wrongAnswers;
+        
+        // Deshabilitar opciones
+        options.forEach(opt => opt.disabled = true);
+        
+        // Mostrar explicación
+        showExplanation(currentQ, isCorrect);
+    });
+});
+
+nextQuestionButton.addEventListener('click', () => {
+    currentQuestion++;
+    
+    if (currentQuestion < totalQuestions) {
+        loadQuestion();
+    } else {
+        showResults();
+    }
+});
+
+restartButton.addEventListener('click', restartQuiz);
+shareButton.addEventListener('click', shareResults);
+
+// Iniciar primer pregunta
+document.addEventListener('DOMContentLoaded', () => {
+    // Solo inicializar si estamos en la sección del quiz
+    if (document.getElementById('fck-quiz')) {
+        loadQuestion();
+    }
+});
+
+// Efecto de confeti mejorado
+function triggerConfetti() {
+    if (window.confetti) {
+        const colors = ['#ff0033', '#0099ff', '#ffffff'];
+        
+        confetti({
+            particleCount: 150,
+            spread: 90,
+            origin: { y: 0.6 },
+            colors: colors,
+            shapes: ['circle', 'star'],
+            scalar: 1.2
+        });
+        
+        // Efecto adicional
+        setTimeout(() => {
+            confetti({
+                particleCount: 50,
+                angle: 60,
+                spread: 70,
+                origin: { x: 0.2 },
+                colors: colors
+            });
+            
+            confetti({
+                particleCount: 50,
+                angle: 120,
+                spread: 70,
+                origin: { x: 0.8 },
+                colors: colors
+            });
+        }, 300);
+    }
+}

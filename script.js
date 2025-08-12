@@ -850,3 +850,268 @@ function triggerConfetti() {
         }, 300);
     }
 }
+// Banco de 50 stats exclusivos (no repetidos en otras secciones)
+const fuckStats = [
+    {
+        stat: "El 90% de las monedas y billetes tienen rastros de cocaína",
+        category: "Sociedad"
+    },
+    {
+        stat: "Los astronautas de la ISS ven 16 amaneceres cada 24 horas",
+        category: "Espacio"
+    },
+    {
+        stat: "El calentamiento global está haciendo que los días sean más largos",
+        category: "Ciencia"
+    },
+    {
+        stat: "El olor a lluvia es causado por bacterias que viven en el suelo",
+        category: "Naturaleza"
+    },
+    {
+        stat: "Los bebés tienen un 25% más de huesos que los adultos",
+        category: "Anatomía"
+    },
+    {
+        stat: "El 99.9% del espacio está completamente vacío",
+        category: "Espacio"
+    },
+    {
+        stat: "Los pulpos tienen cerebros en cada tentáculo que funcionan independientemente",
+        category: "Biología"
+    },
+    {
+        stat: "El lugar más seco del planeta (Desierto de Atacama) se convierte en un jardín floral cada 5-7 años",
+        category: "Naturaleza"
+    },
+    {
+        stat: "El sonido del mar en los caracoles es en realidad el ruido de tu propia sangre circulando",
+        category: "Física"
+    },
+    {
+        stat: "Los humanos son los únicos animales que disfrutan comiendo comida picante",
+        category: "Antropología"
+    },
+    {
+        stat: "El árbol más solitario del mundo (un abeto en Nueva Zelanda) tiene su vecino más cercano a 200km de distancia",
+        category: "Naturaleza"
+    },
+    {
+        stat: "El 60% de tu cuerpo no es humano: son bacterias, hongos y otros microorganismos",
+        category: "Biología"
+    },
+    {
+        stat: "Los relámpagos pueden calentar el aire circundante a 30,000°C (5 veces más caliente que el sol)",
+        category: "Meteorología"
+    },
+    {
+        stat: "El animal más ruidoso del planeta (un camarón pistola) puede generar sonidos de 200dB (más que un disparo)",
+        category: "Biología"
+    },
+    {
+        stat: "Existe un hongo que convierte a las hormigas en zombies controladores mentales",
+        category: "Micología"
+    },
+    {
+        stat: "El 10% de los huesos de un gato están en su cola",
+        category: "Zoología"
+    },
+    {
+        stat: "Los diamantes pueden quemarse si se calientan a 900°C en presencia de oxígeno",
+        category: "Química"
+    },
+    {
+        stat: "El lugar más profundo del océano (Fosa de las Marianas) podría contener el Monte Everest y sobrarían 2km",
+        category: "Oceanografía"
+    },
+    {
+        stat: "Los humanos son los únicos primates cuyos senos son visibles fuera del período de lactancia",
+        category: "Antropología"
+    },
+    {
+        stat: "El 95% de las especies marinas siguen sin ser descubiertas",
+        category: "Biología"
+    },
+    {
+        stat: "El material más resistente conocido (Grafeno) es 200 veces más fuerte que el acero pero 6 veces más ligero",
+        category: "Tecnología"
+    },
+    {
+        stat: "El cerebro humano puede almacenar el equivalente a 2.5 millones de gigabytes de información",
+        category: "Neurociencia"
+    },
+    {
+        stat: "El animal más viejo del planeta (una almeja llamada Ming) vivió 507 años hasta que los científicos la mataron por error",
+        category: "Zoología"
+    },
+    {
+        stat: "El 70% del oxígeno que respiramos proviene del fitoplancton oceánico, no de los árboles",
+        category: "Ecología"
+    },
+    {
+        stat: "Los gatos domésticos comparten un 95.6% de su genoma con los tigres",
+        category: "Genética"
+    },
+    {
+        stat: "El lugar más frío del universo conocido está en la Tierra (laboratorio del MIT a 0.0000000001°K)",
+        category: "Física"
+    },
+    {
+        stat: "El 99% del oro del planeta está enterrado en su núcleo (suficiente para cubrir la superficie con una capa de 4m)",
+        category: "Geología"
+    },
+    {
+        stat: "Los bebés humanos son los únicos mamíferos que no pueden nadar instintivamente al nacer",
+        category: "Biología"
+    },
+    {
+        stat: "El 40% de las parejas casadas en Japón no mantienen relaciones sexuales",
+        category: "Sociedad"
+    },
+    {
+        stat: "El agua caliente se congela más rápido que la fría (Efecto Mpemba)",
+        category: "Física"
+    },
+    {
+        stat: "El animal con el cerebro más grande proporcionalmente (hormiga bulldog) dedica el 15% de su cuerpo a su cerebro",
+        category: "Zoología"
+    },
+    {
+        stat: "El 90% de las células de tu cuerpo no son humanas (son microbios)",
+        category: "Biología"
+    },
+    {
+        stat: "El lugar con más biodiversidad del planeta (Parque Nacional Madidi) tiene 11% de todas las especies conocidas",
+        category: "Ecología"
+    },
+    {
+        stat: "Los humanos son los únicos animales que producen lágrimas emocionales",
+        category: "Antropología"
+    },
+    {
+        stat: "El 85% de las plantas del mundo aún no han sido estudiadas por sus propiedades medicinales",
+        category: "Botánica"
+    },
+    {
+        stat: "El material más oscuro conocido (Vantablack) absorbe el 99.965% de la luz visible",
+        category: "Tecnología"
+    },
+    {
+        stat: "El 60% de tu masa corporal está compuesta por átomos que estuvieron dentro de estrellas",
+        category: "Astrofísica"
+    },
+    {
+        stat: "Los pulpos pueden editar su propio ARN para adaptarse rápidamente a cambios ambientales",
+        category: "Genética"
+    },
+    {
+        stat: "El lugar con más rayos del planeta (Lago de Maracaibo) tiene 1.2 millones de relámpagos por año",
+        category: "Meteorología"
+    },
+    {
+        stat: "Los humanos comparten el 70% de su ADN con las babosas",
+        category: "Genética"
+    },
+    {
+        stat: "El 30% de los usuarios de internet son bots",
+        category: "Tecnología"
+    },
+    {
+        stat: "El animal más resistente (Tardígrado) puede sobrevivir en el espacio exterior",
+        category: "Biología"
+    },
+    {
+        stat: "El 95% de las comunicaciones intercontinentales pasan por cables submarinos",
+        category: "Tecnología"
+    },
+    {
+        stat: "Los bebés nacen sin rótulas (se desarrollan entre los 2-6 años)",
+        category: "Anatomía"
+    },
+    {
+        stat: "El lugar con más bacterias por cm² (aeropuertos) tiene superficies con 20,000 gérmenes por pulgada cuadrada",
+        category: "Microbiología"
+    },
+    {
+        stat: "Los humanos son los únicos animales que se sonrojan",
+        category: "Antropología"
+    },
+    {
+        stat: "El 80% de las imágenes en internet son de gatos",
+        category: "Internet"
+    },
+    {
+        stat: "El animal con mejor memoria (elefante) puede recordar rutas de migración de 20 años",
+        category: "Zoología"
+    },
+    {
+        stat: "El 99.999% del ADN humano es idéntico entre todas las personas",
+        category: "Genética"
+    },
+    {
+        stat: "Los bebés pueden respirar y tragar simultáneamente hasta los 7 meses de edad",
+        category: "Anatomía"
+    }
+];
+
+// Mostrar un stat aleatorio
+function showRandomStat() {
+    const randomIndex = Math.floor(Math.random() * fuckStats.length);
+    const randomStat = fuckStats[randomIndex];
+    
+    const statElement = document.getElementById('random-stat');
+    const categoryElement = document.getElementById('stat-category');
+    
+    // Animación de fade out/in
+    statElement.classList.remove('stat-animate');
+    categoryElement.classList.remove('stat-animate');
+    
+    setTimeout(() => {
+        statElement.textContent = randomStat.stat;
+        categoryElement.textContent = randomStat.category;
+        
+        statElement.classList.add('stat-animate');
+        categoryElement.classList.add('stat-animate');
+    }, 300);
+}
+
+// Recargar stat manualmente
+document.getElementById('reload-stat').addEventListener('click', showRandomStat);
+
+// Compartir stat
+document.getElementById('share-stat').addEventListener('click', function() {
+    const statText = document.getElementById('random-stat').textContent;
+    const shareText = `🤯 F*CK STAT: "${statText}"\n\nDescubre más en ${window.location.href}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'F*CK STAT Impactante',
+            text: shareText
+        }).catch(err => {
+            console.log('Error al compartir:', err);
+        });
+    } else {
+        // Fallback para navegadores sin API de share
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert('¡Stat copiado! Pega para compartir');
+        });
+    }
+});
+
+// Guardar stat (simulado)
+document.getElementById('save-stat').addEventListener('click', function() {
+    const btn = this;
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    btn.style.backgroundColor = '#00ff88';
+    
+    setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-bookmark"></i>';
+        btn.style.backgroundColor = '';
+    }, 2000);
+});
+
+// Mostrar un stat al cargar la página
+document.addEventListener('DOMContentLoaded', showRandomStat);
+
+// Cambiar stat automáticamente cada 2 minutos
+setInterval(showRandomStat, 120000);

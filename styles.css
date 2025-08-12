@@ -306,3 +306,58 @@ a {
         border-radius: 30px;
     }
 }
+/* Añade estos estilos al final */
+.featured-episode {
+    background-color: #111;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.featured-episode-cover {
+    min-width: 300px;
+    height: 300px;
+    background-color: #333;
+    border-radius: 10px;
+    background-size: cover;
+}
+
+.featured-episode-content {
+    flex: 1;
+}
+
+.full-episodes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.library-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.library-controls input, 
+.library-controls select {
+    padding: 10px 15px;
+    border-radius: 30px;
+    border: none;
+    background-color: #111;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .featured-episode {
+        flex-direction: column;
+    }
+    
+    .featured-episode-cover {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

@@ -2,39 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchEpisodes(true); // true indica que es para la biblioteca completa
 });
 
-async function fetchEpisodes(isLibrary = false) {
-    try {
-        const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const rssUrl = encodeURIComponent('https://anchor.fm/s/108369df0/podcast/rss');
-        const response = await fetch(proxyUrl + rssUrl);
-        const data = await response.json();
-        
-        // Parseamos el contenido XML del RSS
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-        
-        // Extraemos los episodios
-        const items = xmlDoc.querySelectorAll('item');
-        const episodes = Array.from(items).map(item => {
-            return {
-                title: item.querySelector('title').textContent,
-                pubDate: item.querySelector('pubDate').textContent,
-                audio: item.querySelector('enclosure').getAttribute('url'),
-                image: item.querySelector('image')?.getAttribute('href') || 'default-cover.jpg',
-                description: item.querySelector('description').textContent,
-                link: item.querySelector('link').textContent
-            };
-        });
-        
-        if (isLibrary) {
-            renderFullLibrary(episodes);
-        }
-    } catch (error) {
-        console.error('Error fetching episodes:', error);
-        renderFullLibrary([]);
-    }
-}
-
 function renderFullLibrary(episodes) {
     const grid = document.getElementById('full-episodes-grid');
     
@@ -50,31 +17,37 @@ function renderFullLibrary(episodes) {
     
     grid.innerHTML = '';
     
-    episodes.forEach(episode => {
+    episodes.forEach((episode, index) => {
         const episodeCard = document.createElement('div');
         episodeCard.className = 'episode-card library-card';
         episodeCard.innerHTML = `
-            <div class="episode-cover" style="background-image: url('${episode.image}')"></div>
-            <div class="episode-info">
-                <h3>${episode.title}</h3>
-                <div class="episode-meta">
-                    <span class="episode-date"><i class="far fa-calendar-alt"></i> ${formatDate(episode.pubDate)}</span>
-                </div>
-                <p class="episode-description">${truncateDescription(episode.description, 100)}</p>
-                <div class="episode-platforms">
-                    <a href="${episode.link}" target="_blank" class="platform-btn spotify"><i class="fab fa-spotify"></i></a>
-                    <a href="${episode.link}" target="_blank" class="platform-btn apple"><i class="fab fa-apple"></i></a>
-                    <a href="${episode.link}" target="_blank" class="platform-btn youtube"><i class="fab fa-youtube"></i></a>
+            <div class="library-card-header">
+                <span class="episode-number">Episodio #${episodes.length - index}</span>
+                <span class="episode-date"><i class="far fa-calendar-alt"></i> ${formatDate(episode.pubDate)}</span>
+            </div>
+            <div class="library-card-content">
+                <div class="library-card-cover" style="background-image: url('${episode.image}')"></div>
+                <div class="library-card-info">
+                    <h3>${episode.title}</h3>
+                    <p class="episode-description">${truncateDescription(episode.description, 200)}</p>
+                    <div class="library-card-buttons">
+                        <a href="${episode.link}" target="_blank" class="btn btn-accent btn-sm">
+                            <i class="fab fa-spotify"></i> Escuchar
+                        </a>
+                        <a href="${episode.link}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fas fa-external-link-alt"></i> Más opciones
+                        </a>
+                    </div>
                 </div>
             </div>
         `;
         grid.appendChild(episodeCard);
     });
     
-    setupSearch(episodes);
+    setupSearchAndFilter(episodes);
 }
 
-function setupSearch(episodes) {
+function setupSearchAndFilter(episodes) {
     const searchInput = document.getElementById('search-episodes');
     const filterSelect = document.getElementById('filter-order');
     
@@ -84,7 +57,7 @@ function setupSearch(episodes) {
             ep.title.toLowerCase().includes(term) || 
             ep.description.toLowerCase().includes(term)
         );
-        renderFullLibrary(filtered);
+        renderFilteredEpisodes(filtered);
     });
     
     filterSelect.addEventListener('change', function() {
@@ -94,10 +67,54 @@ function setupSearch(episodes) {
         } else if (this.value === 'oldest') {
             sorted.sort((a, b) => new Date(a.pubDate) - new Date(b.pubDate));
         }
-        renderFullLibrary(sorted);
+        renderFilteredEpisodes(sorted);
     });
 }
 
+function renderFilteredEpisodes(filteredEpisodes) {
+    const grid = document.getElementById('full-episodes-grid');
+    
+    if (filteredEpisodes.length === 0) {
+        grid.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-search"></i>
+                <p>No se encontraron episodios que coincidan con tu búsqueda</p>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = '';
+    
+    filteredEpisodes.forEach((episode, index) => {
+        const episodeCard = document.createElement('div');
+        episodeCard.className = 'episode-card library-card';
+        episodeCard.innerHTML = `
+            <div class="library-card-header">
+                <span class="episode-number">Episodio #${filteredEpisodes.length - index}</span>
+                <span class="episode-date"><i class="far fa-calendar-alt"></i> ${formatDate(episode.pubDate)}</span>
+            </div>
+            <div class="library-card-content">
+                <div class="library-card-cover" style="background-image: url('${episode.image}')"></div>
+                <div class="library-card-info">
+                    <h3>${episode.title}</h3>
+                    <p class="episode-description">${truncateDescription(episode.description, 200)}</p>
+                    <div class="library-card-buttons">
+                        <a href="${episode.link}" target="_blank" class="btn btn-accent btn-sm">
+                            <i class="fab fa-spotify"></i> Escuchar
+                        </a>
+                        <a href="${episode.link}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fas fa-external-link-alt"></i> Más opciones
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(episodeCard);
+    });
+}
+
+// Funciones auxiliares
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);

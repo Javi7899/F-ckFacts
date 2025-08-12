@@ -883,3 +883,73 @@ canvas {
     pointer-events: none;
     z-index: 1000;
 }
+/* Estilos para imágenes responsive y seguras */
+.featured-episode-cover,
+.episode-cover {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.featured-episode-cover {
+    aspect-ratio: 1/1;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.episode-cover {
+    aspect-ratio: 1/1;
+}
+
+.featured-episode-cover img,
+.episode-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    background-color: #333;
+}
+
+/* Efecto hover sutil */
+.featured-episode-cover:hover img,
+.episode-cover:hover img {
+    transform: scale(1.03);
+}
+
+/* Placeholder mientras carga */
+.featured-episode-cover img[src="default-cover.jpg"],
+.episode-cover img[src="default-cover.jpg"] {
+    object-fit: contain;
+    padding: 20%;
+    background-color: #222;
+}
+
+/* Badge para nuevo episodio */
+.featured-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    .featured-episode-cover {
+        max-width: 100%;
+    }
+    
+    .featured-episode-cover img,
+    .episode-cover img {
+        min-height: 250px;
+    }
+}

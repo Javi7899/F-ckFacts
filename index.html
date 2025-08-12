@@ -81,7 +81,75 @@
             <div class="about-image"></div>
         </div>
     </section>
-
+<section id="fck-quiz" class="fck-quiz-section">
+    <div class="quiz-container">
+        <h2>F*CK QUIZ EXTREMO</h2>
+        <p class="quiz-subtitle">50 preguntas que te harán cuestionar la realidad</p>
+        
+        <div class="quiz-stats-bar">
+            <span class="stat"><i class="fas fa-check-circle"></i> <span id="correct-count">0</span></span>
+            <span class="stat"><i class="fas fa-times-circle"></i> <span id="wrong-count">0</span></span>
+            <span class="stat"><i class="fas fa-clock"></i> <span id="time-counter">00:00</span></span>
+        </div>
+        
+        <div class="quiz-progress">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="quiz-question-container">
+            <div class="question-counter">Pregunta <span id="current-question">1</span>/50</div>
+            <h3 id="question-text">Cargando pregunta...</h3>
+            
+            <div class="quiz-options">
+                <button class="quiz-option" data-correct="true">VERDAD</button>
+                <button class="quiz-option" data-correct="false">MENTIRA</button>
+            </div>
+            
+            <div class="explanation-container hidden">
+                <div class="explanation-box">
+                    <h4><i class="fas fa-lightbulb"></i> Explicación:</h4>
+                    <p id="explanation-text"></p>
+                </div>
+                <button class="next-question">Siguiente Pregunta <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="quiz-result hidden">
+            <div class="result-header">
+                <h3 id="result-title">¡RESULTADOS FINALES!</h3>
+                <p id="result-text">Puntuación: <span class="result-percentage">87%</span></p>
+            </div>
+            
+            <div class="result-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="final-correct">35</div>
+                    <div class="stat-label">Aciertos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="final-wrong">15</div>
+                    <div class="stat-label">Fallos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="final-time">03:45</div>
+                    <div class="stat-label">Tiempo</div>
+                </div>
+            </div>
+            
+            <div class="result-details">
+                <h4>Tu desempeño:</h4>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: 87%"></div>
+                </div>
+                <p id="performance-text">¡Eres un experto en datos WTF!</p>
+            </div>
+            
+            <div class="result-actions">
+                <button id="restart-quiz"><i class="fas fa-redo"></i> Intentar de nuevo</button>
+                <button id="share-results"><i class="fas fa-share-alt"></i> Compartir</button>
+            </div>
+        </div>
+    </div>
+</section>
     <section class="subscribe">
         <h2>Suscríbete al F*CKFACTS semanal</h2>
         <form class="subscribe-form">

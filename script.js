@@ -7,137 +7,88 @@ const truthMythFacts = [
     { fact: "Las mariposas saborean con sus patas", answer: true, explanation: "¡Verdadero! Tienen receptores gustativos en las patas." }
 ];
 
-// Función para obtener episodios del RSS
-async function fetchEpisodes(isLibrary = false) {
-    try {
-        const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const rssUrl = encodeURIComponent('https://anchor.fm/s/108369df0/podcast/rss');
-        const response = await fetch(proxyUrl + rssUrl);
-        const data = await response.json();
+// Función para parsear el XML del RSS correctamente
+function parseEpisodesFromRSS(xmlString) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+    
+    return Array.from(xmlDoc.querySelectorAll('item')).map(item => {
+        // Extraer la imagen del episodio (formato Anchor)
+        let imageUrl = 'default-cover.jpg'; // Imagen por defecto
         
-        // Parseamos el contenido XML del RSS
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-        
-        // Extraemos los episodios
-        const items = xmlDoc.querySelectorAll('item');
-        const episodes = Array.from(items).map(item => {
-            return {
-                title: item.querySelector('title').textContent,
-                pubDate: item.querySelector('pubDate').textContent,
-                audio: item.querySelector('enclosure').getAttribute('url'),
-                image: item.querySelector('image')?.getAttribute('href') || 'default-cover.jpg',
-                description: item.querySelector('description').textContent,
-                link: item.querySelector('link').textContent
-            };
-        });
-        
-        if (isLibrary) {
-            renderFullLibrary(episodes);
-        } else {
-            renderHomeEpisodes(episodes);
+        // Primero intentamos con itunes:image
+        const itunesImage = item.querySelector('itunes\\:image');
+        if (itunesImage) {
+            imageUrl = itunesImage.getAttribute('href');
         }
-    } catch (error) {
-        console.error('Error fetching episodes:', error);
-        // Mostrar episodios de ejemplo si hay error (solo para desarrollo)
-        if (isLibrary) {
-            renderFullLibrary([]);
-        } else {
-            renderHomeEpisodes([]);
+        
+        // Si no, buscamos en media:content
+        if (imageUrl === 'default-cover.jpg') {
+            const mediaContent = item.querySelector('media\\:content');
+            if (mediaContent && mediaContent.getAttribute('medium') === 'image') {
+                imageUrl = mediaContent.getAttribute('url');
+            }
         }
-    }
+        
+        // Si no, buscamos en media:thumbnail
+        if (imageUrl === 'default-cover.jpg') {
+            const mediaThumbnail = item.querySelector('media\\:thumbnail');
+            if (mediaThumbnail) {
+                imageUrl = mediaThumbnail.getAttribute('url');
+            }
+        }
+        
+        // Si no, buscamos en enclosure con type image
+        if (imageUrl === 'default-cover.jpg') {
+            const enclosures = item.querySelectorAll('enclosure');
+            enclosures.forEach(enc => {
+                if (enc.getAttribute('type')?.startsWith('image/')) {
+                    imageUrl = enc.getAttribute('url');
+                }
+            });
+        }
+
+        return {
+            title: item.querySelector('title').textContent,
+            pubDate: item.querySelector('pubDate').textContent,
+            audio: item.querySelector('enclosure')?.getAttribute('url') || null,
+            image: imageUrl,
+            description: item.querySelector('description').textContent,
+            link: item.querySelector('link').textContent
+        };
+    });
 }
 
-function renderHomeEpisodes(episodes) {
-    // Episodio destacado (el más reciente)
-    const featuredContainer = document.getElementById('featured-episode');
-    const gridContainer = document.getElementById('episodes-grid');
-    
-    if (episodes.length === 0) {
-        featuredContainer.innerHTML = `
-            <div class="error-message">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>No se pudieron cargar los episodios. Por favor intenta más tarde.</p>
-            </div>
-        `;
-        gridContainer.innerHTML = '';
-        return;
-    }
-
-    const featured = episodes[0];
-    featuredContainer.innerHTML = `
-        <div class="featured-episode-cover" style="background-image: url('${featured.image}')">
+// Función para renderizar el episodio destacado
+function renderFeaturedEpisode(episode) {
+    return `
+        <div class="featured-episode-cover">
+            <img src="${episode.image}" 
+                 alt="${episode.title}" 
+                 loading="lazy"
+                 onerror="this.src='default-cover.jpg'">
             <div class="featured-badge">NUEVO</div>
         </div>
         <div class="featured-episode-content">
             <h3>ÚLTIMO EPISODIO</h3>
-            <h2>${featured.title}</h2>
+            <h2>${episode.title}</h2>
             <div class="featured-meta">
-                <span class="featured-date"><i class="far fa-calendar-alt"></i> ${formatDate(featured.pubDate)}</span>
+                <span class="featured-date">
+                    <i class="far fa-calendar-alt"></i> ${formatDate(episode.pubDate)}
+                </span>
             </div>
-            <p class="featured-description">${truncateDescription(featured.description, 150)}</p>
+            <p class="featured-description">${truncateDescription(episode.description, 150)}</p>
             <div class="featured-buttons">
-                <a href="${featured.link}" target="_blank" class="btn btn-accent"><i class="fab fa-spotify"></i> Spotify</a>
-                <a href="${featured.link}" target="_blank" class="btn btn-outline"><i class="fas fa-headphones"></i> Escuchar</a>
+                <a href="${episode.link}" target="_blank" class="btn btn-accent">
+                    <i class="fab fa-spotify"></i> Spotify
+                </a>
+                <a href="${episode.link}" target="_blank" class="btn btn-outline">
+                    <i class="fas fa-headphones"></i> Escuchar
+                </a>
             </div>
         </div>
     `;
-    
-    // Grid de episodios (siguientes 3)
-    gridContainer.innerHTML = '';
-    
-    const episodesToShow = episodes.slice(1, 4);
-    episodesToShow.forEach(episode => {
-        const episodeCard = document.createElement('div');
-        episodeCard.className = 'episode-card';
-        episodeCard.innerHTML = `
-            <div class="episode-cover" style="background-image: url('${episode.image}')"></div>
-            <div class="episode-info">
-                <h3>${episode.title}</h3>
-                <div class="episode-meta">
-                    <span class="episode-date"><i class="far fa-calendar-alt"></i> ${formatDate(episode.pubDate)}</span>
-                </div>
-                <div class="episode-buttons">
-                    <a href="${episode.link}" target="_blank" class="btn btn-play"><i class="fas fa-play"></i> Escuchar</a>
-                </div>
-            </div>
-        `;
-        gridContainer.appendChild(episodeCard);
-    });
-
-    // Añadir botón de Random Fact después de los episodios
-    const randomFactSection = document.createElement('div');
-    randomFactSection.className = 'random-fact-section';
-    randomFactSection.innerHTML = `
-        <button id="randomFactBtn" class="btn btn-accent">Dame un F*ckFact</button>
-        <div id="randomFactDisplay" class="random-fact"></div>
-    `;
-    gridContainer.parentNode.insertBefore(randomFactSection, gridContainer.nextSibling);
-}
-
-// Funciones auxiliares
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
-}
-
-function truncateDescription(text, maxLength) {
-    if (!text) return '';
-    // Eliminar etiquetas HTML si las hay
-    const div = document.createElement('div');
-    div.innerHTML = text;
-    const cleanText = div.textContent || div.innerText || '';
-    
-    return cleanText.length > maxLength ? 
-        `${cleanText.substring(0, maxLength)}...` : cleanText;
-}
-
-// Configuración inicial al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar episodios
-    fetchEpisodes();
-    
-    // Random fact generator
+}    // Random fact generator
     const randomFacts = [
         "Los humanos comparten el 50% de su ADN con los plátanos.",
         "El sonido que hace un pato no hace eco y nadie sabe por qué.",

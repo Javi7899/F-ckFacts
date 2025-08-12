@@ -8,36 +8,57 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
     <header class="hero">
         <div class="hero-content">
             <h1 class="logo">F*CKFACTS</h1>
             <p class="slogan">Solo facts que te harán decir WTF</p>
-            <a href="#listen" class="btn btn-accent">Escuchar ahora</a>
+            <div class="hero-buttons">
+                <a href="#listen" class="btn btn-accent pulse">Escuchar ahora</a>
+                <a href="#truth-myth" class="btn btn-outline">Verdad o Mito</a>
+            </div>
             <div class="scroll-down"></div>
         </div>
     </header>
-<section class="episodes">
-    <h2>Últimos Episodios</h2>
-    <div id="featured-episode" class="featured-episode">
-        <!-- El episodio más reciente se cargará aquí -->
-    </div>
-    
-    <div class="other-episodes">
-        <h3>Episodios anteriores</h3>
-        <div id="episodes-grid" class="episodes-grid">
-            <!-- Los últimos 3-4 episodios se cargarán aquí -->
+
+    <section class="episodes">
+        <h2>Últimos Episodios</h2>
+        <div id="featured-episode" class="featured-episode">
+            <!-- El episodio más reciente se cargará aquí -->
         </div>
-        <a href="biblioteca.html" class="btn btn-accent">Ver todos los episodios</a>
-    </div>
-</section>
+        
+        <div class="other-episodes">
+            <h3>Episodios anteriores</h3>
+            <div id="episodes-grid" class="episodes-grid">
+                <!-- Los últimos 3-4 episodios se cargarán aquí -->
+            </div>
+            <a href="biblioteca.html" class="btn btn-accent">Ver todos los episodios</a>
+        </div>
+    </section>
+
+    <section id="truth-myth" class="truth-myth">
+        <div class="truth-myth-content">
+            <h2>Verdad o Mito</h2>
+            <div class="truth-myth-card">
+                <p class="fact-question" id="truth-myth-text">Los humanos comparten el 50% de su ADN con los plátanos</p>
+                <div class="truth-myth-buttons">
+                    <button class="btn btn-truth" data-answer="true">Verdad</button>
+                    <button class="btn btn-myth" data-answer="false">Mito</button>
+                </div>
+                <div id="truth-myth-result" class="truth-myth-result"></div>
+            </div>
+            <button id="new-fact-btn" class="btn btn-accent">Nuevo Fact</button>
+        </div>
+    </section>
 
     <section class="wtf-fact">
         <div class="wtf-content">
             <h2>Dato WTF de la semana</h2>
             <p class="fact-text">Los pulpos tienen tres corazones y su sangre es azul.</p>
-            <button class="btn btn-accent">Descubre más en el Episodio #18</button>
+            <a href="#" class="btn btn-accent">Descubre más en el Episodio #18</a>
         </div>
     </section>
 
@@ -46,7 +67,10 @@
             <div class="about-text">
                 <h2>Sobre el podcast</h2>
                 <p>F*CKFACTS es tu dosis semanal de datos impactantes, curiosidades científicas y mitos destruidos. Sin rodeos, sin filtros, solo facts que te harán cuestionar todo.</p>
-                <p>Hosteado por [Tu Nombre], con un estilo directo y humor ácido.</p>
+                <p>Hosteado por Manuel Castro Zambrana y Javier Torres Rubio, con un estilo directo y humor ácido.</p>
+                <a href="mailto:fckfactscorp@gmail.com" class="btn btn-accent btn-sponsor">
+                    <i class="fas fa-handshake"></i> Colaboraciones/Sponsors
+                </a>
             </div>
             <div class="about-image"></div>
         </div>
@@ -62,18 +86,20 @@
 
     <footer class="footer">
         <div class="social-links">
-            <a href="#">TikTok</a>
-            <a href="#">Instagram</a>
-            <a href="#">Twitter/X</a>
-            <a href="#">YouTube</a>
+            <a href="https://www.facebook.com/profile.php?id=61579196526923" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/fckfacts.corp/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/FckFactsCorp" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.tiktok.com/@fckfacts.corp" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
         <div class="platform-links">
-            <a href="#">Spotify</a>
-            <a href="#">Apple Podcasts</a>
-            <a href="#">Google Podcasts</a>
+            <a href="#" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
+            <a href="#" target="_blank"><i class="fab fa-apple"></i> Apple Podcasts</a>
+            <a href="#" target="_blank"><i class="fab fa-google"></i> Google Podcasts</a>
         </div>
         <button id="randomFactBtn" class="btn btn-accent">Dame un F*ckFact</button>
         <div id="randomFactDisplay" class="random-fact"></div>
+        <p class="copyright">© 2023 F*CKFACTS Corp. Todos los derechos reservados.</p>
     </footer>
 
     <script src="script.js"></script>

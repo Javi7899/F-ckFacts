@@ -1152,3 +1152,394 @@ canvas {
 .dev-name:hover {
     text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
+/* Sección de Redes Sociales */
+.social-section {
+    padding: 100px 20px;
+    background-color: var(--darker-bg);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.social-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.social-section h2::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 4px;
+    background-color: var(--accent-color);
+    margin: 20px auto 0;
+}
+
+.section-subtitle {
+    color: var(--secondary-text);
+    margin-bottom: 50px;
+    font-size: 1.1rem;
+}
+
+/* Estilos del iPhone */
+.iphone-container {
+    position: relative;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.iphone-frame {
+    position: relative;
+    background: #111;
+    border-radius: 50px;
+    padding: 15px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 
+                0 0 0 10px #1a1a1a,
+                0 0 0 12px #333,
+                inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.iphone-screen {
+    position: relative;
+    background: #000;
+    border-radius: 35px;
+    overflow: hidden;
+    aspect-ratio: 9/19.5;
+    transition: all 0.5s ease;
+}
+
+/* Estados de la pantalla */
+.screen-state {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen-state.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Pantalla de bloqueo */
+.lock-screen {
+    background: linear-gradient(135deg, #000, #1a1a1a);
+    color: white;
+    justify-content: space-between;
+}
+
+.lock-screen-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.lock-screen-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 51, 0.7));
+}
+
+.time {
+    font-size: 3.5rem;
+    font-weight: 300;
+    margin: 20px 0;
+}
+
+.notifications-container {
+    width: 100%;
+    max-height: 50%;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.notification {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.2rem;
+}
+
+.notification.instagram .notification-icon {
+    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+}
+
+.notification.tiktok .notification-icon {
+    background: #000;
+    color: #fff;
+}
+
+.notification.twitter .notification-icon {
+    background: #1DA1F2;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-app {
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    margin-bottom: 3px;
+}
+
+.notification-message {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Pantalla de Spotify */
+.spotify-screen {
+    background: #000;
+    color: white;
+}
+
+.spotify-header {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.spotify-now-playing {
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+}
+
+.spotify-podcast-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.spotify-cover {
+    width: 80%;
+    margin: 0 auto 25px;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.spotify-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.spotify-episode-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.spotify-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+
+.spotify-progress-bar .progress {
+    width: 30%;
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+.spotify-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    margin-bottom: 30px;
+}
+
+.spotify-controls {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    color: var(--accent-color);
+}
+
+.play-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(255, 0, 51, 0.5);
+}
+
+.play-btn:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+/* Pantalla de Redes Sociales */
+.social-screen {
+    background: #000;
+    color: white;
+    justify-content: center;
+}
+
+.social-header {
+    margin-bottom: 30px;
+}
+
+.social-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+.social-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    color: white;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    transform: translateY(-5px);
+}
+
+.social-icon i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.social-icon span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.social-icon.instagram {
+    background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
+}
+
+.social-icon.tiktok {
+    background: #000;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.social-icon.twitter {
+    background: #1DA1F2;
+}
+
+.social-icon.youtube {
+    background: #FF0000;
+}
+
+.social-icon.spotify {
+    background: #1DB954;
+}
+
+/* Notch del iPhone */
+.iphone-frame::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 25px;
+    background: #1a1a1a;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    z-index: 3;
+}
+
+/* Botones laterales del iPhone */
+.iphone-frame::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 30%;
+    height: 20%;
+    width: 5px;
+    background: #1a1a1a;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .iphone-container {
+        max-width: 300px;
+    }
+    
+    .social-icons {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .iphone-container {
+        max-width: 250px;
+    }
+    
+    .time {
+        font-size: 2.5rem;
+    }
+    
+    .spotify-episode-title {
+        font-size: 1rem;
+    }
+}

@@ -334,117 +334,140 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
 });
 // Notificaciones de redes sociales
 function setupSocialNotifications() {
-    // Actualizar hora en tiempo real
-    function updateTime() {
+    // Configuración de hora y fecha
+    function updateDateTime() {
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        document.querySelector('.time').textContent = `${hours}:${minutes}`;
+        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+        document.querySelector('.time').textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        document.querySelector('.date').textContent = now.toLocaleDateString('es-ES', options);
     }
     
-    updateTime();
-    setInterval(updateTime, 1000);
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 
+    // Datos de notificaciones mejorados
     const notifications = [
         {
             app: "Instagram",
             message: "Nuevo episodio disponible: 'Los secretos del ADN que te volarán la cabeza'",
             icon: "fab fa-instagram",
             class: "instagram",
-            url: "https://www.instagram.com/fckfacts.corp/"
+            url: "https://www.instagram.com/fckfacts.corp/",
+            domain: "instagram.com"
         },
         {
             app: "TikTok",
-            message: "¿Sabías esto? Mira nuestro último F*CKFACT en el nuevo episodio",
+            message: "¿Sabías que los pulpos tienen 3 corazones? Mira nuestro último F*CKFACT",
             icon: "fab fa-tiktok",
             class: "tiktok",
-            url: "https://www.tiktok.com/@fckfacts.corp"
+            url: "https://www.tiktok.com/@fckfacts.corp",
+            domain: "tiktok.com"
         },
         {
             app: "Facebook",
-            message: "¡WTF! No te pierdas el episodio #25 con datos que no creerás",
+            message: "¡WTF! El nuevo episodio #25 revela datos que no creerás sobre el espacio",
             icon: "fab fa-facebook-f",
             class: "facebook",
-            url: "https://www.facebook.com/profile.php?id=61579196526923"
+            url: "https://www.facebook.com/profile.php?id=61579196526923",
+            domain: "facebook.com"
         },
         {
             app: "YouTube",
-            message: "Video nuevo: Los 10 facts más impactantes del mes",
+            message: "Video nuevo: Los 10 facts más impactantes del mes que te dejarán boquiabierto",
             icon: "fab fa-youtube",
             class: "youtube",
-            url: "https://www.youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q"
+            url: "https://www.youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q",
+            domain: "youtube.com"
         },
         {
-            app: "X",
-            message: "Acabamos de publicar un dato que te hará cuestionar todo #FckFacts",
+            app: "X (Twitter)",
+            message: "Acabamos de publicar: ¿Sabías que el 50% de tu ADN es idéntico al de un plátano? #FckFacts",
             icon: "fab fa-twitter",
             class: "twitter",
-            url: "https://x.com/FckFactsCorp"
+            url: "https://x.com/FckFactsCorp",
+            domain: "x.com"
         }
     ];
 
     const container = document.querySelector('.notifications-container');
     const iphone = document.querySelector('.iphone-16-pro-max');
-    
-    // Crear notificaciones
-    notifications.forEach(notif => {
+    let notificationQueue = [...notifications];
+    let activeNotifications = [];
+
+    function createNotification(notifData) {
         const notification = document.createElement('div');
-        notification.className = `notification ${notif.class}`;
+        notification.className = `notification ${notifData.class}`;
+        
+        // Hora aleatoria reciente (últimas 2 horas)
+        const randomMinutes = Math.floor(Math.random() * 120);
+        const notificationTime = new Date(Date.now() - randomMinutes * 60000);
+        const timeString = notificationTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        
         notification.innerHTML = `
             <div class="notification-icon">
-                <i class="${notif.icon}"></i>
+                <i class="${notifData.icon}"></i>
             </div>
             <div class="notification-content">
-                <div class="notification-app">${notif.app}</div>
-                <div class="notification-message">${notif.message}</div>
+                <div class="notification-header">
+                    <span class="notification-app">${notifData.app}</span>
+                    <span class="notification-time">${timeString}</span>
+                </div>
+                <div class="notification-message">${notifData.message}</div>
+                <div class="notification-domain">${notifData.domain}</div>
             </div>
         `;
         
         notification.addEventListener('click', () => {
-            window.open(notif.url, '_blank');
+            window.open(notifData.url, '_blank');
         });
         
-        container.appendChild(notification);
-    });
-
-    // Animación en bucle
-    const notificationElements = document.querySelectorAll('.notification');
-    let currentIndex = 0;
-    
-    function showNextNotification() {
-        // Ocultar todas
-        notificationElements.forEach(notif => {
-            notif.classList.remove('visible');
-        });
-        
-        // Mostrar la actual
-        notificationElements[currentIndex].classList.add('visible');
-        
-        // Efecto de vibración
-        iphone.classList.add('vibrate');
-        setTimeout(() => {
-            iphone.classList.remove('vibrate');
-        }, 300);
-        
-        // Incrementar índice
-        currentIndex = (currentIndex + 1) % notificationElements.length;
+        return notification;
     }
 
-    // Iniciar ciclo
-    showNextNotification();
-    let notificationInterval = setInterval(showNextNotification, 3000);
+    function showNextNotification() {
+        if (notificationQueue.length === 0) {
+            // Reiniciar el ciclo
+            notificationQueue = [...notifications];
+            setTimeout(showNextNotification, 3000);
+            return;
+        }
+        
+        const nextNotif = notificationQueue.shift();
+        const notificationElement = createNotification(nextNotif);
+        
+        container.prepend(notificationElement);
+        activeNotifications.unshift(notificationElement);
+        
+        // Limitar a 4 notificaciones visibles
+        if (activeNotifications.length > 4) {
+            const oldNotif = activeNotifications.pop();
+            oldNotif.style.opacity = '0';
+            setTimeout(() => oldNotif.remove(), 500);
+        }
+        
+        // Mostrar con animación
+        setTimeout(() => {
+            notificationElement.classList.add('visible');
+            // Efecto de vibración
+            iphone.classList.add('vibrate');
+            setTimeout(() => iphone.classList.remove('vibrate'), 300);
+        }, 50);
+        
+        // Siguiente notificación
+        setTimeout(showNextNotification, 3000);
+    }
+
+    // Iniciar el ciclo
+    setTimeout(showNextNotification, 2000);
     
-    // Pausar animaciones cuando no está visible
+    // Pausar cuando no es visible
     const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-            notificationInterval = setInterval(showNextNotification, 3000);
-        } else {
-            clearInterval(notificationInterval);
+            showNextNotification();
         }
     }, { threshold: 0.1 });
     
     observer.observe(document.querySelector('.social-section'));
 }
 
-// Llamar la función al cargar
 document.addEventListener('DOMContentLoaded', setupSocialNotifications);

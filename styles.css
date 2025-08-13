@@ -1341,3 +1341,45 @@ canvas {
         font-size: 1rem;
     }
 }
+/* Wallpaper con hora */
+.wallpaper {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.time {
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: white;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+.wallpaper .logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: white;
+    text-shadow: 0 0 20px rgba(255,0,51,0.7);
+}
+
+/* Efecto de vibración */
+@keyframes vibrate {
+    0% { transform: translateX(0) rotate(0deg); }
+    20% { transform: translateX(-2px) rotate(-0.5deg); }
+    40% { transform: translateX(2px) rotate(0.5deg); }
+    60% { transform: translateX(-1px) rotate(-0.25deg); }
+    80% { transform: translateX(1px) rotate(0.25deg); }
+    100% { transform: translateX(0) rotate(0deg); }
+}
+
+.vibrate {
+    animation: vibrate 0.3s linear;
+}

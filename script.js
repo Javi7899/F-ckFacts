@@ -331,4 +331,90 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
     setTimeout(() => {
         window.open(e.target.href, '_blank');
     }, 500);
-});
+});// Notificaciones de redes sociales
+function setupSocialNotifications() {
+    const notifications = [
+        {
+            app: "Instagram",
+            message: "Nuevo episodio disponible: 'Los secretos del ADN que te volarán la cabeza'",
+            icon: "fab fa-instagram",
+            class: "instagram",
+            url: "https://www.instagram.com/fckfacts.corp/"
+        },
+        {
+            app: "TikTok",
+            message: "¿Sabías esto? Mira nuestro último F*CKFACT en el nuevo episodio",
+            icon: "fab fa-tiktok",
+            class: "tiktok",
+            url: "https://www.tiktok.com/@fckfacts.corp"
+        },
+        {
+            app: "Facebook",
+            message: "¡WTF! No te pierdas el episodio #25 con datos que no creerás",
+            icon: "fab fa-facebook-f",
+            class: "facebook",
+            url: "https://www.facebook.com/profile.php?id=61579196526923"
+        },
+        {
+            app: "YouTube",
+            message: "Video nuevo: Los 10 facts más impactantes del mes",
+            icon: "fab fa-youtube",
+            class: "youtube",
+            url: "https://www.youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q"
+        },
+        {
+            app: "X",
+            message: "Acabamos de publicar un dato que te hará cuestionar todo #FckFacts",
+            icon: "fab fa-twitter",
+            class: "twitter",
+            url: "https://x.com/FckFactsCorp"
+        }
+    ];
+
+    const container = document.querySelector('.notifications-container');
+    
+    // Crear notificaciones
+    notifications.forEach(notif => {
+        const notification = document.createElement('div');
+        notification.className = `notification ${notif.class}`;
+        notification.innerHTML = `
+            <div class="notification-icon">
+                <i class="${notif.icon}"></i>
+            </div>
+            <div class="notification-content">
+                <div class="notification-app">${notif.app}</div>
+                <div class="notification-message">${notif.message}</div>
+            </div>
+        `;
+        
+        notification.addEventListener('click', () => {
+            window.open(notif.url, '_blank');
+        });
+        
+        container.appendChild(notification);
+    });
+
+    // Animación en bucle
+    const notificationElements = document.querySelectorAll('.notification');
+    let currentIndex = 0;
+    
+    function showNextNotification() {
+        // Ocultar todas
+        notificationElements.forEach(notif => {
+            notif.classList.remove('visible');
+        });
+        
+        // Mostrar la actual
+        notificationElements[currentIndex].classList.add('visible');
+        
+        // Incrementar índice
+        currentIndex = (currentIndex + 1) % notificationElements.length;
+    }
+
+    // Iniciar ciclo cada 3 segundos
+    showNextNotification();
+    setInterval(showNextNotification, 3000);
+}
+
+// Llamar la función al cargar
+document.addEventListener('DOMContentLoaded', setupSocialNotifications);

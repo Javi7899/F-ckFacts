@@ -362,6 +362,38 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://instagram.com/fckfacts.corp",
             domain: "instagram.com"
         },
+        {
+            app: "TikTok",
+            message: "¿Los pulpos tienen 3 corazones? Mira este F*CKFACT",
+            icon: "fab fa-tiktok",
+            class: "tiktok",
+            url: "https://tiktok.com/@fckfacts.corp",
+            domain: "tiktok.com"
+        },
+        {
+            app: "X",
+            message: "¿Sabías que el 50% de tu ADN es igual al de un plátano? #FckFacts",
+            icon: "fab fa-x-twitter",
+            class: "twitter",
+            url: "https://x.com/FckFactsCorp",
+            domain: "x.com"
+        },
+        {
+            app: "YouTube",
+            message: "Los 10 facts más impactantes del mes - Nuevo video",
+            icon: "fab fa-youtube",
+            class: "youtube",
+            url: "https://youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q",
+            domain: "youtube.com"
+        },
+        {
+            app: "Facebook",
+            message: "¡El episodio #25 revela secretos del universo!",
+            icon: "fab fa-facebook-f",
+            class: "facebook",
+            url: "https://facebook.com/profile.php?id=61579196526923",
+            domain: "facebook.com"
+        },
         // ... (mantén el resto de notificaciones)
     ];
 

@@ -367,7 +367,7 @@ function setupSocialNotifications() {
         {
             app: "X",
             message: "¿Sabías que el 50% de tu ADN es igual al de un plátano? #FckFacts",
-            icon: "fab fa-x-twitter",
+            icon: "fa-brands fa-x-twitter",
             class: "twitter",
             url: "https://x.com/FckFactsCorp",
             domain: "x.com"

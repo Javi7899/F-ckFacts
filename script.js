@@ -158,143 +158,6 @@ function setupTruthMythGame() {
     getRandomFact();
 }
 
-// Control de la sección de redes sociales
-function setupSocialSection() {
-    const socialSection = document.getElementById('social-section');
-    const iphoneScreen = document.querySelector('.iphone-screen');
-    const screenStates = document.querySelectorAll('.screen-state');
-    const notificationsContainer = document.querySelector('.notifications-container');
-    
-    // Notificaciones para mostrar
-    const notifications = [
-        {
-            app: 'Instagram',
-            icon: 'fab fa-instagram',
-            message: 'Nuevo episodio de F*CKFACTS disponible ahora',
-            delay: 1000
-        },
-        {
-            app: 'TikTok',
-            icon: 'fab fa-tiktok',
-            message: 'Acabamos de subir un dato WTF que no te puedes perder',
-            delay: 2000
-        },
-        {
-            app: 'Twitter',
-            icon: 'fab fa-twitter',
-            message: 'Escucha nuestro último episodio #25 ahora en todas las plataformas',
-            delay: 3000
-        }
-    ];
-    
-    // Configurar Intersection Observer para la sección
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Mostrar pantalla de bloqueo
-                setActiveScreen('lock-screen');
-                
-                // Mostrar notificaciones una por una
-                showNotifications();
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    observer.observe(socialSection);
-    
-    // Configurar scroll dentro de la sección
-    let lastScrollPosition = 0;
-    let currentScreen = 0;
-    const totalScreens = screenStates.length;
-    
-    socialSection.addEventListener('wheel', (e) => {
-        const delta = e.deltaY;
-        
-        // Solo procesar si estamos dentro de la sección
-        const rect = socialSection.getBoundingClientRect();
-        if (rect.top > 0 || rect.bottom < window.innerHeight) return;
-        
-        e.preventDefault();
-        
-        if (delta > 0) {
-            // Scroll hacia abajo
-            if (currentScreen < totalScreens - 1) {
-                currentScreen++;
-                setActiveScreenByIndex(currentScreen);
-            }
-        } else {
-            // Scroll hacia arriba
-            if (currentScreen > 0) {
-                currentScreen--;
-                setActiveScreenByIndex(currentScreen);
-            }
-        }
-        
-        lastScrollPosition = window.scrollY;
-    }, { passive: false });
-    
-    // Funciones auxiliares
-    function setActiveScreen(screenClass) {
-        screenStates.forEach(state => {
-            state.classList.remove('active');
-        });
-        
-        const activeScreen = document.querySelector(`.${screenClass}`);
-        if (activeScreen) {
-            activeScreen.classList.add('active');
-        }
-    }
-    
-    function setActiveScreenByIndex(index) {
-        screenStates.forEach(state => {
-            state.classList.remove('active');
-        });
-        
-        if (screenStates[index]) {
-            screenStates[index].classList.add('active');
-            
-            // Si es la última pantalla (redes sociales), hacer scroll suave
-            if (index === 2) {
-                setTimeout(() => {
-                    socialSection.scrollIntoView({ behavior: 'smooth' });
-                }, 300);
-            }
-        }
-    }
-    
-    function showNotifications() {
-        notificationsContainer.innerHTML = '';
-        
-        notifications.forEach(notification => {
-            setTimeout(() => {
-                const notificationElement = document.createElement('div');
-                notificationElement.className = `notification ${notification.app.toLowerCase()}`;
-                notificationElement.innerHTML = `
-                    <div class="notification-icon">
-                        <i class="${notification.icon}"></i>
-                    </div>
-                    <div class="notification-content">
-                        <div class="notification-app">${notification.app}</div>
-                        <div class="notification-message">${notification.message}</div>
-                    </div>
-                `;
-                
-                notificationsContainer.appendChild(notificationElement);
-                
-                setTimeout(() => {
-                    notificationElement.classList.add('show');
-                }, 50);
-            }, notification.delay);
-        });
-        
-        // Después de mostrar notificaciones, permitir avanzar a Spotify
-        setTimeout(() => {
-            setActiveScreen('spotify-screen');
-            currentScreen = 1;
-        }, 4000);
-    }
-}
-
 // Función para lanzar confeti
 function triggerConfetti() {
     const confettiSettings = {
@@ -347,9 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Verdad o Mito
     setupTruthMythGame();
-    
-    // Sección de redes sociales
-    setupSocialSection();
     
     // Smooth scroll para enlaces
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -427,7 +287,6 @@ document.head.appendChild(style);
 const confettiScript = document.createElement('script');
 confettiScript.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
 document.head.appendChild(confettiScript);
-
 // Efecto especial para el nombre en el footer
 document.querySelectorAll('.name-part').forEach((part, index) => {
     part.style.animationDelay = `${index * 0.1}s`;

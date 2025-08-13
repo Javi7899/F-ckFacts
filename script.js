@@ -333,24 +333,18 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
     }, 500);
 });
 // Notificaciones de redes sociales
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar que los elementos existan
-    if (!document.querySelector('.notifications-container')) {
-        console.error('No se encontró el contenedor de notificaciones');
-        return;
-    }
-
+function setupSocialNotifications() {
     // Configuración de hora
     function updateTime() {
-        const timeElement = document.querySelector('.time');
-        if (timeElement) {
-            const now = new Date();
-            timeElement.textContent = now.toLocaleTimeString('es-ES', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-        }
+        const now = new Date();
+        document.querySelector('.time').textContent = now.toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
     }
+    
+    updateTime();
+    setInterval(updateTime, 60000);
 
     // Datos de notificaciones
     const notifications = [
@@ -393,15 +387,14 @@ document.addEventListener('DOMContentLoaded', function() {
             class: "facebook",
             url: "https://facebook.com/profile.php?id=61579196526923",
             domain: "facebook.com"
-        },
-        // ... (mantén el resto de notificaciones)
+        }
     ];
 
     const container = document.querySelector('.notifications-container');
     const iphone = document.querySelector('.iphone-16-pro-max');
     let activeNotifications = [];
     let currentIndex = 0;
-    let animationInterval;
+    let notificationInterval;
 
     function createNotification(notifData) {
         const notification = document.createElement('div');
@@ -435,49 +428,63 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showNextNotification() {
+        // Crear nueva notificación
         const notification = createNotification(notifications[currentIndex]);
-        container.insertBefore(notification, container.firstChild);
+        container.prepend(notification);
         activeNotifications.unshift(notification);
         
-        // Forzar reflow para activar la animación
+        // Forzar reflow para la animación
         void notification.offsetWidth;
         
+        // Mostrar con animación
         notification.classList.add('visible');
+        
+        // Efecto de vibración
         iphone.classList.add('vibrate');
+        setTimeout(() => iphone.classList.remove('vibrate'), 300);
         
-        setTimeout(() => {
-            iphone.classList.remove('vibrate');
-        }, 300);
-        
-        // Limitar a 3 notificaciones
+        // Limitar a 3 notificaciones visibles
         if (activeNotifications.length > 3) {
-            const oldNotif = activeNotifications.pop();
-            oldNotif.classList.add('fade-out');
-            setTimeout(() => oldNotif.remove(), 500);
+            const oldNotification = activeNotifications.pop();
+            oldNotification.style.transition = 'all 0.5s ease-out';
+            oldNotification.style.opacity = '0';
+            oldNotification.style.transform = 'translateY(-20px) scale(0.9)';
+            
+            setTimeout(() => {
+                oldNotification.remove();
+            }, 500);
         }
         
+        // Actualizar índice
         currentIndex = (currentIndex + 1) % notifications.length;
     }
 
-    function initNotifications() {
-        updateTime();
-        setInterval(updateTime, 60000);
-        
-        // Iniciar ciclo cada 5 segundos
+    function startNotificationCycle() {
+        // Mostrar primera notificación inmediatamente
         showNextNotification();
-        animationInterval = setInterval(showNextNotification, 5000);
+        
+        // Iniciar intervalo para las siguientes (cada 5 segundos)
+        notificationInterval = setInterval(showNextNotification, 5000);
     }
 
-    // Iniciar solo cuando sea visible
+    // Observador para pausar cuando no es visible
     const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-            initNotifications();
+            startNotificationCycle();
         } else {
-            clearInterval(animationInterval);
-            container.innerHTML = '';
+            clearInterval(notificationInterval);
+            container.querySelectorAll('.notification').forEach(n => n.remove());
             activeNotifications = [];
+            currentIndex = 0; // Resetear el índice
         }
     }, { threshold: 0.1 });
-
+    
     observer.observe(document.querySelector('.social-section'));
-});
+}
+
+// Iniciar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupSocialNotifications);
+} else {
+    setupSocialNotifications();
+}

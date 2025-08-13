@@ -334,74 +334,77 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
 });
 // Notificaciones de redes sociales
 function setupSocialNotifications() {
-    // Configuración de hora y fecha
-    function updateDateTime() {
+    // Configuración de hora
+    function updateTime() {
         const now = new Date();
-        const options = { weekday: 'long', day: 'numeric', month: 'long' };
-        document.querySelector('.time').textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-        document.querySelector('.date').textContent = now.toLocaleDateString('es-ES', options);
+        document.querySelector('.time').textContent = now.toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
     }
     
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
+    updateTime();
+    setInterval(updateTime, 60000);
 
     // Datos de notificaciones mejorados
     const notifications = [
         {
             app: "Instagram",
-            message: "Nuevo episodio disponible: 'Los secretos del ADN que te volarán la cabeza'",
+            message: "Nuevo episodio: 'Datos científicos que parecen broma'",
             icon: "fab fa-instagram",
             class: "instagram",
-            url: "https://www.instagram.com/fckfacts.corp/",
+            url: "https://instagram.com/fckfacts.corp",
             domain: "instagram.com"
         },
         {
             app: "TikTok",
-            message: "¿Sabías que los pulpos tienen 3 corazones? Mira nuestro último F*CKFACT",
+            message: "¿Los pulpos tienen 3 corazones? Mira este F*CKFACT",
             icon: "fab fa-tiktok",
             class: "tiktok",
-            url: "https://www.tiktok.com/@fckfacts.corp",
+            url: "https://tiktok.com/@fckfacts.corp",
             domain: "tiktok.com"
         },
         {
-            app: "Facebook",
-            message: "¡WTF! El nuevo episodio #25 revela datos que no creerás sobre el espacio",
-            icon: "fab fa-facebook-f",
-            class: "facebook",
-            url: "https://www.facebook.com/profile.php?id=61579196526923",
-            domain: "facebook.com"
-        },
-        {
-            app: "YouTube",
-            message: "Video nuevo: Los 10 facts más impactantes del mes que te dejarán boquiabierto",
-            icon: "fab fa-youtube",
-            class: "youtube",
-            url: "https://www.youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q",
-            domain: "youtube.com"
-        },
-        {
-            app: "X (Twitter)",
-            message: "Acabamos de publicar: ¿Sabías que el 50% de tu ADN es idéntico al de un plátano? #FckFacts",
-            icon: "fab fa-twitter",
+            app: "X",
+            message: "¿Sabías que el 50% de tu ADN es igual al de un plátano? #FckFacts",
+            icon: "fab fa-x-twitter",
             class: "twitter",
             url: "https://x.com/FckFactsCorp",
             domain: "x.com"
+        },
+        {
+            app: "YouTube",
+            message: "Los 10 facts más impactantes del mes - Nuevo video",
+            icon: "fab fa-youtube",
+            class: "youtube",
+            url: "https://youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q",
+            domain: "youtube.com"
+        },
+        {
+            app: "Facebook",
+            message: "¡El episodio #25 revela secretos del universo!",
+            icon: "fab fa-facebook-f",
+            class: "facebook",
+            url: "https://facebook.com/profile.php?id=61579196526923",
+            domain: "facebook.com"
         }
     ];
 
     const container = document.querySelector('.notifications-container');
     const iphone = document.querySelector('.iphone-16-pro-max');
-    let notificationQueue = [...notifications];
     let activeNotifications = [];
+    let currentIndex = 0;
+    let animationTimeout;
 
     function createNotification(notifData) {
         const notification = document.createElement('div');
         notification.className = `notification ${notifData.class}`;
         
-        // Hora aleatoria reciente (últimas 2 horas)
-        const randomMinutes = Math.floor(Math.random() * 120);
-        const notificationTime = new Date(Date.now() - randomMinutes * 60000);
-        const timeString = notificationTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
         
         notification.innerHTML = `
             <div class="notification-icon">
@@ -424,46 +427,49 @@ function setupSocialNotifications() {
         return notification;
     }
 
-    function showNextNotification() {
-        if (notificationQueue.length === 0) {
-            // Reiniciar el ciclo
-            notificationQueue = [...notifications];
-            setTimeout(showNextNotification, 3000);
-            return;
-        }
+    function showNotification() {
+        // Crear nueva notificación
+        const notification = createNotification(notifications[currentIndex]);
+        container.prepend(notification);
+        activeNotifications.unshift(notification);
         
-        const nextNotif = notificationQueue.shift();
-        const notificationElement = createNotification(nextNotif);
-        
-        container.prepend(notificationElement);
-        activeNotifications.unshift(notificationElement);
-        
-        // Limitar a 4 notificaciones visibles
-        if (activeNotifications.length > 4) {
-            const oldNotif = activeNotifications.pop();
-            oldNotif.style.opacity = '0';
-            setTimeout(() => oldNotif.remove(), 500);
-        }
-        
-        // Mostrar con animación
+        // Animación de entrada
         setTimeout(() => {
-            notificationElement.classList.add('visible');
-            // Efecto de vibración
+            notification.classList.add('visible');
+            
+            // Efecto de vibración suave
             iphone.classList.add('vibrate');
             setTimeout(() => iphone.classList.remove('vibrate'), 300);
         }, 50);
         
-        // Siguiente notificación
-        setTimeout(showNextNotification, 3000);
+        // Limitar a 3 notificaciones visibles
+        if (activeNotifications.length > 3) {
+            const oldNotification = activeNotifications.pop();
+            oldNotification.style.transition = 'all 0.5s ease-out';
+            oldNotification.style.opacity = '0';
+            oldNotification.style.transform = 'translateY(-20px) scale(0.9)';
+            
+            setTimeout(() => {
+                oldNotification.remove();
+            }, 500);
+        }
+        
+        // Actualizar índice
+        currentIndex = (currentIndex + 1) % notifications.length;
+        
+        // Programar siguiente notificación
+        animationTimeout = setTimeout(showNotification, 5000);
     }
 
-    // Iniciar el ciclo
-    setTimeout(showNextNotification, 2000);
+    // Iniciar ciclo
+    showNotification();
     
-    // Pausar cuando no es visible
+    // Limpiar al salir de la sección
     const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-            showNextNotification();
+        if (!entries[0].isIntersecting) {
+            clearTimeout(animationTimeout);
+            container.querySelectorAll('.notification').forEach(n => n.remove());
+            activeNotifications = [];
         }
     }, { threshold: 0.1 });
     

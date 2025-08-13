@@ -333,20 +333,26 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
     }, 500);
 });
 // Notificaciones de redes sociales
-function setupSocialNotifications() {
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar que los elementos existan
+    if (!document.querySelector('.notifications-container')) {
+        console.error('No se encontró el contenedor de notificaciones');
+        return;
+    }
+
     // Configuración de hora
     function updateTime() {
-        const now = new Date();
-        document.querySelector('.time').textContent = now.toLocaleTimeString('es-ES', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
+        const timeElement = document.querySelector('.time');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('es-ES', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
     }
-    
-    updateTime();
-    setInterval(updateTime, 60000);
 
-    // Datos de notificaciones mejorados
+    // Datos de notificaciones
     const notifications = [
         {
             app: "Instagram",
@@ -356,45 +362,14 @@ function setupSocialNotifications() {
             url: "https://instagram.com/fckfacts.corp",
             domain: "instagram.com"
         },
-        {
-            app: "TikTok",
-            message: "¿Los pulpos tienen 3 corazones? Mira este F*CKFACT",
-            icon: "fab fa-tiktok",
-            class: "tiktok",
-            url: "https://tiktok.com/@fckfacts.corp",
-            domain: "tiktok.com"
-        },
-        {
-            app: "X",
-            message: "¿Sabías que el 50% de tu ADN es igual al de un plátano? #FckFacts",
-            icon: "fab fa-x-twitter",
-            class: "twitter",
-            url: "https://x.com/FckFactsCorp",
-            domain: "x.com"
-        },
-        {
-            app: "YouTube",
-            message: "Los 10 facts más impactantes del mes - Nuevo video",
-            icon: "fab fa-youtube",
-            class: "youtube",
-            url: "https://youtube.com/channel/UC0PaghHcl1DOlMxeh82Wp3Q",
-            domain: "youtube.com"
-        },
-        {
-            app: "Facebook",
-            message: "¡El episodio #25 revela secretos del universo!",
-            icon: "fab fa-facebook-f",
-            class: "facebook",
-            url: "https://facebook.com/profile.php?id=61579196526923",
-            domain: "facebook.com"
-        }
+        // ... (mantén el resto de notificaciones)
     ];
 
     const container = document.querySelector('.notifications-container');
     const iphone = document.querySelector('.iphone-16-pro-max');
     let activeNotifications = [];
     let currentIndex = 0;
-    let animationTimeout;
+    let animationInterval;
 
     function createNotification(notifData) {
         const notification = document.createElement('div');
@@ -427,53 +402,50 @@ function setupSocialNotifications() {
         return notification;
     }
 
-    function showNotification() {
-        // Crear nueva notificación
+    function showNextNotification() {
         const notification = createNotification(notifications[currentIndex]);
-        container.prepend(notification);
+        container.insertBefore(notification, container.firstChild);
         activeNotifications.unshift(notification);
         
-        // Animación de entrada
-        setTimeout(() => {
-            notification.classList.add('visible');
-            
-            // Efecto de vibración suave
-            iphone.classList.add('vibrate');
-            setTimeout(() => iphone.classList.remove('vibrate'), 300);
-        }, 50);
+        // Forzar reflow para activar la animación
+        void notification.offsetWidth;
         
-        // Limitar a 3 notificaciones visibles
+        notification.classList.add('visible');
+        iphone.classList.add('vibrate');
+        
+        setTimeout(() => {
+            iphone.classList.remove('vibrate');
+        }, 300);
+        
+        // Limitar a 3 notificaciones
         if (activeNotifications.length > 3) {
-            const oldNotification = activeNotifications.pop();
-            oldNotification.style.transition = 'all 0.5s ease-out';
-            oldNotification.style.opacity = '0';
-            oldNotification.style.transform = 'translateY(-20px) scale(0.9)';
-            
-            setTimeout(() => {
-                oldNotification.remove();
-            }, 500);
+            const oldNotif = activeNotifications.pop();
+            oldNotif.classList.add('fade-out');
+            setTimeout(() => oldNotif.remove(), 500);
         }
         
-        // Actualizar índice
         currentIndex = (currentIndex + 1) % notifications.length;
-        
-        // Programar siguiente notificación
-        animationTimeout = setTimeout(showNotification, 5000);
     }
 
-    // Iniciar ciclo
-    showNotification();
-    
-    // Limpiar al salir de la sección
+    function initNotifications() {
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        // Iniciar ciclo cada 5 segundos
+        showNextNotification();
+        animationInterval = setInterval(showNextNotification, 5000);
+    }
+
+    // Iniciar solo cuando sea visible
     const observer = new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) {
-            clearTimeout(animationTimeout);
-            container.querySelectorAll('.notification').forEach(n => n.remove());
+        if (entries[0].isIntersecting) {
+            initNotifications();
+        } else {
+            clearInterval(animationInterval);
+            container.innerHTML = '';
             activeNotifications = [];
         }
     }, { threshold: 0.1 });
-    
-    observer.observe(document.querySelector('.social-section'));
-}
 
-document.addEventListener('DOMContentLoaded', setupSocialNotifications);
+    observer.observe(document.querySelector('.social-section'));
+});

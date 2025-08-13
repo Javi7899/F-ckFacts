@@ -1152,3 +1152,192 @@ canvas {
 .dev-name:hover {
     text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
+/* Sección Redes Sociales */
+.social-section {
+    padding: 80px 20px;
+    background-color: #000;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.social-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.social-section h2::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 4px;
+    background-color: var(--accent-color);
+    margin: 20px auto 0;
+}
+
+.iphone-container {
+    display: flex;
+    justify-content: center;
+    perspective: 1000px;
+}
+
+.iphone-16-pro-max {
+    width: 300px;
+    height: 620px;
+    background: #111;
+    border-radius: 50px;
+    border: 12px solid #1a1a1a;
+    position: relative;
+    box-shadow: 0 30px 50px rgba(0,0,0,0.5),
+                inset 0 0 0 2px rgba(255,255,255,0.05);
+    transform-style: preserve-3d;
+    transform: rotateY(-15deg) rotateX(5deg);
+}
+
+.dynamic-island {
+    width: 100px;
+    height: 30px;
+    background: #000;
+    border-radius: 20px;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.lock-screen {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 38px;
+}
+
+.wallpaper {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: white;
+    text-shadow: 0 0 20px rgba(255,0,51,0.7);
+}
+
+.notifications-container {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    background: rgba(20,20,20,0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    border-left: 4px solid;
+}
+
+.notification.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification:hover {
+    transform: translateY(-3px) !important;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.notification-content {
+    flex: 1;
+    text-align: left;
+}
+
+.notification-app {
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+}
+
+.notification-message {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Colores por red social */
+.notification.instagram { border-color: #E1306C; }
+.notification.instagram .notification-icon { background: linear-gradient(45deg, #405DE6, #E1306C, #FFDC80); }
+
+.notification.tiktok { border-color: #25F4EE; }
+.notification.tiktok .notification-icon { background: #000; color: #25F4EE; }
+
+.notification.facebook { border-color: #1877F2; }
+.notification.facebook .notification-icon { background: #1877F2; }
+
+.notification.youtube { border-color: #FF0000; }
+.notification.youtube .notification-icon { background: #FF0000; }
+
+.notification.twitter { border-color: #1DA1F2; }
+.notification.twitter .notification-icon { background: #1DA1F2; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .iphone-16-pro-max {
+        width: 250px;
+        height: 520px;
+        border-radius: 40px;
+    }
+    
+    .social-section h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .iphone-16-pro-max {
+        width: 200px;
+        height: 420px;
+        border-radius: 30px;
+    }
+    
+    .notification {
+        padding: 8px;
+        gap: 8px;
+    }
+    
+    .notification-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+}

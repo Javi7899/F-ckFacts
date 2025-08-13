@@ -331,8 +331,20 @@ document.querySelector('.dev-name').addEventListener('click', (e) => {
     setTimeout(() => {
         window.open(e.target.href, '_blank');
     }, 500);
-});// Notificaciones de redes sociales
+});
+// Notificaciones de redes sociales
 function setupSocialNotifications() {
+    // Actualizar hora en tiempo real
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        document.querySelector('.time').textContent = `${hours}:${minutes}`;
+    }
+    
+    updateTime();
+    setInterval(updateTime, 1000);
+
     const notifications = [
         {
             app: "Instagram",
@@ -372,6 +384,7 @@ function setupSocialNotifications() {
     ];
 
     const container = document.querySelector('.notifications-container');
+    const iphone = document.querySelector('.iphone-16-pro-max');
     
     // Crear notificaciones
     notifications.forEach(notif => {
@@ -407,13 +420,30 @@ function setupSocialNotifications() {
         // Mostrar la actual
         notificationElements[currentIndex].classList.add('visible');
         
+        // Efecto de vibración
+        iphone.classList.add('vibrate');
+        setTimeout(() => {
+            iphone.classList.remove('vibrate');
+        }, 300);
+        
         // Incrementar índice
         currentIndex = (currentIndex + 1) % notificationElements.length;
     }
 
-    // Iniciar ciclo cada 3 segundos
+    // Iniciar ciclo
     showNextNotification();
-    setInterval(showNextNotification, 3000);
+    let notificationInterval = setInterval(showNextNotification, 3000);
+    
+    // Pausar animaciones cuando no está visible
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            notificationInterval = setInterval(showNextNotification, 3000);
+        } else {
+            clearInterval(notificationInterval);
+        }
+    }, { threshold: 0.1 });
+    
+    observer.observe(document.querySelector('.social-section'));
 }
 
 // Llamar la función al cargar

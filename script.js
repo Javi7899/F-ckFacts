@@ -463,8 +463,8 @@ function setupSocialNotifications() {
         // Mostrar primera notificación inmediatamente
         showNextNotification();
         
-        // Iniciar intervalo para las siguientes (cada 5 segundos)
-        notificationInterval = setInterval(showNextNotification, 5000);
+        // Iniciar intervalo para las siguientes (cada 3 segundos)
+        notificationInterval = setInterval(showNextNotification, 3000);
     }
 
     // Observador para pausar cuando no es visible
